@@ -8,7 +8,7 @@ metadata:
     owner: SergeiLitovchenko
 spec:
   containers:
-    - name: container-app
+    - name: flask-app
       image: flask-app
       ports:
         containerPort: 9999
@@ -16,28 +16,21 @@ spec:
         - name: redis-storage
           mountPath: /data/redis
 
-    - name: container-speedee
+    - name: speedee
       image: serglit72/speedee2
       volumeMounts:
         - name: redis-storage
           mountPath: /data/redis
-
       ports:
         containerPort: 7777
-    
-    - name: container-flask-api
-      image: flask-app
-      ports:
-        containerPort: 8080
-      volumeMounts:
-        - mountPath: /data/redis
-          name: redis-storage
     
     - name: redis
       image: redis
       volumeMounts:
         - name: redis-storage
           mountPath: /data/redis
+      ports:
+        containerPort: 6379
   volumes:
     - name: redis-storage
       emptyDir: {}
