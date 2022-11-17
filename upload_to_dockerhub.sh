@@ -10,9 +10,9 @@ dockerpath="serglit72/"
 # Step 2:  
 # Authenticate & tag
 echo "Docker ID and Image: $dockerpath"
-docker tag pyspeedtest serglit72/speedtest:v0.0.1
+docker tag speedee serglit72/speedee:v0.0.2
 docker login
 
 # Step 3:
 # Push image to a docker repository
-docker push serglit72/speedtest:v0.0.1
+docker push serglit72/speedee:v0.0.2

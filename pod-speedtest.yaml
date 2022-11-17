@@ -1,0 +1,45 @@
+apiVersion : v1
+kind: Pod
+metadata:
+  name:python-app-speedee
+  labels:
+    env: prod
+    app: main
+    owner: SergeiLitovchenko
+spec:
+  containers:
+    - name: container-app
+      image: flask-app
+      ports:
+        containerPort: 9999
+      volumeMounts:
+        - name: redis-storage
+          mountPath: /data/redis
+
+    - name: container-speedee
+      image: serglit72/speedee2
+      volumeMounts:
+        - name: redis-storage
+          mountPath: /data/redis
+
+      ports:
+        containerPort: 7777
+    
+    - name: container-flask-api
+      image: flask-app
+      ports:
+        containerPort: 8080
+      volumeMounts:
+        - mountPath: /data/redis
+          name: redis-storage
+    
+    - name: redis
+      image: redis
+      volumeMounts:
+        - name: redis-storage
+          mountPath: /data/redis
+  volumes:
+    - name: redis-storage
+      emptyDir: {}
+
+

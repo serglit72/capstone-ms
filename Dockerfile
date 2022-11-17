@@ -16,7 +16,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 ## Step 4:
 # Expose port 80
-EXPOSE 8787
+EXPOSE 5050
 
 ENTRYPOINT [ "python" ]
 
