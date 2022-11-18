@@ -12,10 +12,3 @@ containers:
     image: flask-app
     ports:
       containerPort: 9999
-    volumeMounts:
-      - name: redis-storage
-        mountPath: /data/redis
-
-volumes:
-  - name: redis-storage
-    emptyDir: {}
