@@ -1,16 +1,33 @@
 from flask import Flask
 from flask import json
 import logging
-import result from results
+import json
 import os
-from datatime import datatime
+from datetime import datetime
 
 
 app = Flask(__name__)
 
-files = os.listdir(/data/redis/)
+# dir = "/Users/serg/Capstone/git-capstone/capstone-ms/data/redis"
+dir = "data/redis"
+files = os.listdir(dir)     
 
-#speedee_test_result1 = "/export/speed_test_11_16_2022_22:05:51.json"
+
+def results(files):
+    res = {}
+    for each in files:
+        t_l = each[-24:-5].split("-")
+        t_l0 = t_l[0].split("_") 
+        t_h,t_m,t_s = t_l[1].split(":")
+        timestamp  = datetime(int(t_l0[2]), int(t_l0[0]), int(t_l0[1]),int(t_h),int(t_m),int(t_s))
+        # print(timestamp)
+        with open(dir+"/"+each, 'r') as f:
+            rd = f.read()
+            # print(rd)
+        res[str(timestamp)] = rd.lstrip("'")
+    
+    return res
+        
 speedee_test_result = results(files)
 
 @app.route('/status')
@@ -26,12 +43,13 @@ def healthcheck():
 
 @app.route('/speedee')
 def speedee():
+
     response = app.response_class(
             response=json.dumps(speedee_test_result),
             status=200,
             mimetype='application/json'
     )
-
+    
     app.logger.info('Metrics request successfull')
     return response
 
@@ -42,19 +60,11 @@ def hello():
     return "Hello World!"
 
 
-def results(files):
-    
-    for each in files:
-      timestamp = each[
-      converted = datetime.datetime.fromtimestamp(timestamp)
-  # Return just the date portion 
-  # Hint: how many characters are in “yyyy-mm-dd”?
-  
-  return ("{}".format(converted.date()))
-      if current > each[ 
 
 if __name__ == "__main__":
     ## stream logs to a file
     logging.basicConfig(filename='app.log',level=logging.DEBUG)
     
     app.run(host='0.0.0.0', port=5050)
+
+   

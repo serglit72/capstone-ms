@@ -1,0 +1,21 @@
+apiVersion : v1
+kind: Pod
+metadata:
+  name: flask
+  labels:
+    env: prod
+    app: main
+    owner: SergeiLitovchenko
+spec:
+containers:
+  - name: flask-app
+    image: flask-app
+    ports:
+      containerPort: 9999
+    volumeMounts:
+      - name: redis-storage
+        mountPath: /data/redis
+
+volumes:
+  - name: redis-storage
+    emptyDir: {}

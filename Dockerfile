@@ -22,5 +22,6 @@ ENTRYPOINT [ "python" ]
 
 ## Step 5:
 # Run app.py at container launch
+
 CMD ["app.py"]
 
