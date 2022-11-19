@@ -1,17 +1,29 @@
 from flask import Flask
 from flask import json
 import logging
-import result from results
-import os
-from datatime import datatime
+import requests
+import subprocess
 
+### Version 0.0.2
 
 app = Flask(__name__)
 
-files = os.listdir(/data/redis/)
 
-#speedee_test_result1 = "/export/speed_test_11_16_2022_22:05:51.json"
-speedee_test_result = results(files)
+speedtest = subprocess.run(["bash","-c", "curl -s https://raw.githubusercontent.com/sivel/speedtest-cli/master/speedtest.py | python3 -"],stdout=subprocess.PIPE)
+txt = speedtest.stdout.decode("utf-8")
+   
+
+@app.route('/speed')
+def speed():
+    response = app.response_class(
+            response=json.dumps({"Internet speed test":txt}),
+            status=200,
+            mimetype='application/json'
+    )
+
+    app.logger.info('Speedtest running...')
+    return response
+
 
 @app.route('/status')
 def healthcheck():
@@ -24,15 +36,23 @@ def healthcheck():
     app.logger.info('Status request successfull')
     return response
 
-@app.route('/speedee')
-def speedee():
+test = requests.get("http://ip-api.com/json")
+my_ip = test.json()
+my_ip = my_ip["query"]
+
+
+
+@app.route('/myip')
+def myip():
+    # print(speedee_test_result)
     response = app.response_class(
-            response=json.dumps(speedee_test_result),
+            response=json.dumps({ "IP address": my_ip}),
             status=200,
             mimetype='application/json'
     )
-
+    
     app.logger.info('Metrics request successfull')
+  
     return response
 
 @app.route("/")
@@ -41,17 +61,6 @@ def hello():
    
     return "Hello World!"
 
-
-def results(files):
-    
-    for each in files:
-      timestamp = each[
-      converted = datetime.datetime.fromtimestamp(timestamp)
-  # Return just the date portion 
-  # Hint: how many characters are in “yyyy-mm-dd”?
-  
-  return ("{}".format(converted.date()))
-      if current > each[ 
 
 if __name__ == "__main__":
     ## stream logs to a file
