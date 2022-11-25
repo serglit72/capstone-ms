@@ -1,5 +1,6 @@
 setup:
 	# Create python virtualenv & source it
+	mkdir .capstone
 	python3 -m venv .capstone
 	source .capstone/bin/activate
 
