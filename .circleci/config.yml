@@ -37,7 +37,8 @@ jobs:
           command: |
             source ~/project/.capstone/bin/activate
             ls -la
-            make lint
+            sudo docker run --rm -i hadolint/hadolint < Dockerfile
+            # make lint
             make test
          
       - setup_remote_docker: 
