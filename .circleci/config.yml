@@ -17,8 +17,9 @@ jobs:
       - run:
           name: "Creating enviromment"
           command: |
-            python --version
-            which python
+            docker ps
+            #python --version
+            which docker
             pwd
 
 
