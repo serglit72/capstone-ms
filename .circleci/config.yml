@@ -17,9 +17,8 @@ jobs:
       - run:
           name: "Creating enviromment"
           command: |
-            docker ps
-            #python --version
-            which docker
+            cat /etc/os-release
+            
             pwd
 
 
