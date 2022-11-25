@@ -10,9 +10,9 @@ dockerpath="serglit72/"
 # Step 2:  
 # Authenticate & tag
 echo "Docker ID and Image: $dockerpath"
-docker tag flask-app serglit72/flask-app:v2.0
-docker login
+sudo docker tag flask-app serglit72/flask-app:v3.0
+sudo docker login
 
 # Step 3:
 # Push image to a docker repository
-docker push serglit72/flask-app:v2.0
+sudo docker push serglit72/flask-app:v3.0
