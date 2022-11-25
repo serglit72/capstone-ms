@@ -25,7 +25,7 @@ jobs:
       - run: 
           name: "Creating virtual enviromment" 
           command: |
-            python3 -m venv .capstone && .capstone/bin/activate 
+            python3 -m venv .capstone && sudo .capstone/bin/activate 
             pwd && ls -la 
             sudo docker --version
       - run:
