@@ -19,9 +19,9 @@ jobs:
             sudo apt install python3-venv curl wget
             python3 --version
             make install
-      - setup_remote_docker: 
-          docker_layer_caching: true
-      - run: docker build -t flask-app . && docker images 
+      # - setup_remote_docker: 
+      #     docker_layer_caching: true
+      - run: sudo docker build -t flask-app . && sudo docker images 
          
             
             
