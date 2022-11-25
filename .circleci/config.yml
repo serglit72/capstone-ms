@@ -17,9 +17,9 @@ jobs:
       - run:
           name: "Creating enviromment"
           command: |
-            cat /etc/os-release
-            
-            pwd
+            sudo apt update
+            sudo apt install python3
+            python --version
 
 
 # Invoke jobs via workflows
