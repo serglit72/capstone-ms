@@ -26,6 +26,11 @@ jobs:
             sudo apt install python3-venv curl wget
             python3 --version
             make install
+            sudo docker build -t flask-app .
+      - setup_remote_docker:
+          version: 20.10.18
+          command: |
+            ./upload_to_dockerhub.sh  
       # - run: 
       #     name: "Creating virtual enviromment" 
       #     command: |
@@ -55,11 +60,11 @@ jobs:
       #       curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -  
       #       sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
       
-      - run:
-          name: "Docker building an image"
-          command: |
-            sudo docker build -t flask-app .
-            ./upload_to_dockerhub.sh         
+      # - run:
+      #     name: "Docker building an image"
+      #     command: |
+      #       sudo docker build -t flask-app .
+      #       ./upload_to_dockerhub.sh         
 
 
 # Invoke jobs via workflows

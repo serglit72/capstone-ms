@@ -12,7 +12,7 @@ install:
 	
 test:
 	# Additional, optional, tests could go here
-	#python -m pytest -vv --cov=myrepolib tests/*.py
+	python -m pytest -vv --cov=capstone-ms tests/
 
 lint:
 	# See local hadolint install instructions:   https://github.com/hadolint/hadolint
@@ -24,3 +24,4 @@ lint:
 	pylint --disable=R,C,W1203,W1202 app.py
 
 all: install lint test
+/Users/serg/Capstone/git-capstone/capstone-ms/tests
