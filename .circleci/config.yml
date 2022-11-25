@@ -20,7 +20,7 @@ jobs:
             sudo apt update
             sudo apt install python3.9
             sudo apt install python3-pip
-            sudo apt install python3-venv
+            sudo apt install python3-venv curl wget
             python3 --version
       - run: 
           name: "Creating virtual enviromment" 
@@ -28,14 +28,23 @@ jobs:
             pwd && ls -la
             python3 -m venv .capstone
             source .capstone/bin/activate 
-            sudo docker --version
-            pwd
+            docker --version > my_test_file.txt
+             
       - run:
-          name: "Install additional commons"
+          name: "Download hadolint"
           command: |
-            sudo apt install apt-transport-https ca-certificates curl software-properties-common
-            sudo apt install gnupg lsb-release
-            sudo docker images | sudo docker ps
+            pip install --upgrade pip
+            pip install -r requirements.txt
+            wget -O hadolint https://github.com/hadolint/hadolint/releases/download/v2.12.0/hadolint-Linux-x86_64
+            chmod +x hadolint
+      - run: 
+          name: "Test Dockerfile and python scripts using lints"
+          command: |
+            # This is linter for Dockerfiles
+            hadolint Dockerfile 
+            pylint --disable=R,C,W1203,W1202 app.py 
+### This is a linter for Python source code linter: https://www.pylint.org/
+### This should be run from inside a virtualenv
       # - run:
       #     name: "Add GPG key for the official Docker repo to the Ubuntu system"
       #     command: |
