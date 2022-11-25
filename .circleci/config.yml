@@ -33,7 +33,7 @@ jobs:
       - run:
           command:
             docker build -t flask-app . 
-            docker login -u serglit72 -p $DOCKERHUB_PASSWORD
+            docker login
             # ./upload_to_dockerhub.sh 
               
       # - setup_remote_docker:
