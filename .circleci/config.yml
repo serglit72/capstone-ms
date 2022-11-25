@@ -20,10 +20,14 @@ jobs:
             sudo apt update
             sudo apt install python3.9-minimal
             sudo apt install python3-pip
-
+            python --version
       - run: 
-          name: "Creating enviromment" 
-          command: pip3 install virtualenv 
+          name: "Creating virtual enviromment" 
+          command: |
+            pip3 install virtualenv
+            python3 -m venv .capstone
+	          . .capstone/bin/activate 
+            pwd && ls -la
 
 
 # Invoke jobs via workflows
