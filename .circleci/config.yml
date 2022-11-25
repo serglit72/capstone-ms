@@ -1,29 +1,46 @@
 version: 2.1
 
 jobs:
-  environment:
-    docker:
-      - image: cimg/base:2022.06
-        auth:
-          username: $DOCKERHUB_LOGIN
-          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
+  build-env:
+    # docker:
+    #   - image: cimg/base:2022.06
+    #     auth:
+    #       username: $DOCKERHUB_LOGIN
+    #       password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
    
+    # steps:
+    #   - checkout
+    #   - run:
+    #       name: "Install Python"
+    #       command: | 
+    #         sudo apt update
+    #         sudo apt install python3
+    #         sudo apt install python3-pip
+    #         sudo apt install python3-venv curl wget
+    #         python3 --version
+    #         make install
+    #   # - setup_remote_docker: 
+    #   #     docker_layer_caching: true
+    #   - run: sudo docker build -t flask-app . && sudo docker images 
+         
+    machine:
+      image: ubuntu-2204:2022.04.2
     steps:
       - checkout
       - run:
-          name: "Install Python"
-          command: | 
-            sudo apt update
-            sudo apt install python3
-            sudo apt install python3-pip
-            sudo apt install python3-venv curl wget
-            python3 --version
-            make install
-      # - setup_remote_docker: 
-      #     docker_layer_caching: true
-      - run: sudo docker build -t flask-app . && sudo docker images 
-         
+          command: |
             
+            make install
+     # with credentials stored in the UI
+     # build the application image
+      - run: 
+          command: |
+            echo "$DOCKERHUB_PASSWORD" | docker login --username $DOCKERHUB_LOGIN --password-stdin
+            docker build -t serglit72/flask-app:latest .
+
+
+     # deploy the image
+      - run: docker push serglit72/flask-app:latest        
             
 
               
@@ -72,4 +89,4 @@ jobs:
 workflows:
   capstone-ms:
     jobs:
-      - environment
+      - build-env
