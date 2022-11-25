@@ -23,12 +23,12 @@ jobs:
             sudo apt install python3-pip
             sudo apt install python3-venv curl wget
             python3 --version && pwd
-            which python
+            which python3
             mkdir capstone
             python3 -m venv capstone/venv
-            ls -la
+            ls -la && pip list
             source capstone/venv/bin/activate
-            which python
+            which python3
             
             # make install 
             # pip freeze > requirements.txt
