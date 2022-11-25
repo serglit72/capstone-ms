@@ -36,8 +36,8 @@ jobs:
           name: "lint and pytest: index page and status page"
           command: |
             source ~/project/.capstone/bin/activate
-            ls -la
-            sudo docker run --rm -i hadolint/hadolint < Dockerfile
+            ls -la && pwd
+            # sudo docker run --rm -i hadolint/hadolint < Dockerfile
             # make lint
             make test
          
