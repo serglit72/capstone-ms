@@ -24,4 +24,3 @@ lint:
 	pylint --disable=R,C,W1203,W1202 app.py
 
 all: install lint test
-/Users/serg/Capstone/git-capstone/capstone-ms/tests
