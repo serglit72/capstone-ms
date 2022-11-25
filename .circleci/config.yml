@@ -15,11 +15,14 @@ jobs:
     steps:
       - checkout
       - run:
-          name: "Creating enviromment"
-          command: |
+          name: "Install Python"
+          command: | 
             sudo apt update
             sudo apt install python3.9-minimal
-            
+
+      - run: 
+          name: "Creating enviromment" 
+          command: pip3 install virtualenv 
 
 
 # Invoke jobs via workflows
