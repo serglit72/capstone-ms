@@ -23,7 +23,7 @@ jobs:
             sudo apt install python3-pip
             sudo apt install python3-venv curl wget
             python3 --version && pwd
-            make install && ls -la
+            make install && ls -la .circleci
       - save_cache:
           paths:
             - .capstone
