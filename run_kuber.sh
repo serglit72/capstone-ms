@@ -8,22 +8,24 @@ dockerpath="serglit72/"
 
 # Step 2
 # Run the Docker Hub container with kubernetes
-#kubectl create deploy speedee --image=serglit72/speedee:v0.0.2
-
+kubectl create deployment balanced --image=docker.io/nginx:1.23
+kubectl expose deployment balanced --type=LoadBalancer --port=80
+kubectl create deployment flask-app --image=serglit72/flask-app:v2.0
+kubectl expose deployment flask-app --type=NodePort --port=80
 # Step 3:
 # List kubernetes pods
-kubectl get deploy,rs,svc,pods
+kubectl get deploy,rs,svc,pods flask-app
 
-pod_name1=$(kubectl get pods --selector=app=speedee -o jsonpath='{.items[*].metadata.name}')
-echo ${pod_name1}
-pod_name2=$(kubectl get pods --selector=app=flask-app -o jsonpath='{.items[*].metadata.name}')
-echo ${pod_name2}
-pod_name3=$(kubectl get pods --selector=app=redis -o jsonpath='{.items[*].metadata.name}')
-echo ${pod_name3}
-
+prod=$(kubectl get pods --selector=app=flask-app -o jsonpath='{.items[*].metadata.name}')
+echo ${prod}
+stage=$(kubectl get pods --selector=app=flask-app -o jsonpath='{.items[*].metadata.name}')
+echo ${stage}
+# load_balancer=$(kubectl get pods --selector=app=load-balancer-o jsonpath='{.items[*].metadata.name}')
+# echo ${load-balancer}
 
 # Step 4:
-# Forward the container port to a host
-kubectl port-forward pod/${pod_nam1e} --address 0.0.0.0 7777:7777
-kubectl port-forward pod/${pod_name2} --address 0.0.0.0 9999:9999
-kubectl port-forward pod/${pod_name3} --address 0.0.0.0 6379:6379
+# Forward the container port to load-balancer
+
+kubectl port-forward pod/${prod} --address 10.0.10.100 8080:5050
+kubectl port-forward pod/${stage} --address 10.0.11.100 8080:5050
+# kubectl port-forward pod/${load-balancer} --address 0.0.0.0 80:8080

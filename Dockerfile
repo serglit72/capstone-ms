@@ -1,4 +1,4 @@
-FROM python:3.8
+FROM python:3.9
 LABEL maintainer="Sergei Litovchenko"
 
 ## Step 1:
@@ -15,12 +15,12 @@ COPY . app.py /app/
 RUN pip install --no-cache-dir -r requirements.txt
 
 ## Step 4:
-# Expose port 80
+# Expose port 5050
 EXPOSE 5050
 
 ENTRYPOINT [ "python" ]
 
 ## Step 5:
-# Run app.py at container launch
+# Run app.py at container: launches Flask web app on localhost:5050
 CMD ["app.py"]
 

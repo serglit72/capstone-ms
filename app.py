@@ -1,50 +1,31 @@
-from flask import Flask
+### Version 0.0.2
+
+from flask import Flask,render_template,request
 from flask import json
+import json
 import logging
 import requests
-import subprocess
-
-### Version 0.0.2
+ 
 
 app = Flask(__name__)
 
+@app.route('/speedtest')
+def speedtest():
 
-speedtest = subprocess.run(["bash","-c", "curl -s https://raw.githubusercontent.com/sivel/speedtest-cli/master/speedtest.py | python3 -"],stdout=subprocess.PIPE)
-txt = speedtest.stdout.decode("utf-8")
-   
-
-@app.route('/speed')
-def speed():
-    response = app.response_class(
-            response=json.dumps({"Internet speed test":txt}),
-            status=200,
-            mimetype='application/json'
-    )
-
-    app.logger.info('Speedtest running...')
-    return response
+    return render_template('speedtest.html')
 
 
 @app.route('/status')
-def healthcheck():
-    response = app.response_class(
-            response=json.dumps({"result":"OK - healthy"}),
-            status=200,
-            mimetype='application/json'
-    )
+def status():
 
-    app.logger.info('Status request successfull')
-    return response
-
-test = requests.get("http://ip-api.com/json")
-my_ip = test.json()
-my_ip = my_ip["query"]
+    return render_template('status.html')
 
 
 
 @app.route('/myip')
-def myip():
-    # print(speedee_test_result)
+def myip(ip_address=None):
+    test = requests.get("http://ip-api.com/json/"+ip_address)
+    my_ip = test.json()
     response = app.response_class(
             response=json.dumps({ "IP address": my_ip}),
             status=200,
@@ -55,15 +36,16 @@ def myip():
   
     return response
 
-@app.route("/")
+@app.route("/",methods=['GET','POST'])
 def hello():
     app.logger.info('Main request successfull')
-   
-    return "Hello World!"
+    return render_template("index.html", form=request.form)
+    
+    # return render_template('index.html', my_ip=my_ip["query"],)
 
 
 if __name__ == "__main__":
     ## stream logs to a file
     logging.basicConfig(filename='app.log',level=logging.DEBUG)
     
-    app.run(host='0.0.0.0', port=5050)
+    app.run(host='0.0.0.0', port=5050,debug=True)

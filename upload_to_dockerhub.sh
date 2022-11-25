@@ -10,9 +10,9 @@ dockerpath="serglit72/"
 # Step 2:  
 # Authenticate & tag
 echo "Docker ID and Image: $dockerpath"
-docker tag speedee serglit72/speedee:v0.0.2
+docker tag flask-app serglit72/flask-app:v2.0
 docker login
 
 # Step 3:
 # Push image to a docker repository
-docker push serglit72/speedee:v0.0.2
+docker push serglit72/flask-app:v2.0
