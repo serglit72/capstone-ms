@@ -37,8 +37,8 @@ jobs:
             pip install -r requirements.txt
             # This is linter for Dockerfiles
             wget -O hadolint https://github.com/hadolint/hadolint/releases/download/v2.12.0/hadolint-Linux-x86_64
-            chmod +x hadolint 
-            docker run --rm -i ghcr.io/hadolint/hadolint < Dockerfile
+            chmod +x hadolint && ./hadolint Dockerfile
+            # docker run --rm -i ghcr.io/hadolint/hadolint < Dockerfile
       - run: 
           name: "Test Python scripts using lints"
           command: |
