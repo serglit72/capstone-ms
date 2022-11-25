@@ -9,9 +9,9 @@ jobs:
     # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
     # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
     docker:
-      - image: cimg/base:2022.06
+      - image: cimg/deploy:2022.06.1
         auth:
-          username: serglit72
+          username: $DOCKERHUB_LOGIN
           password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
    
     steps:
@@ -28,9 +28,11 @@ jobs:
       - setup_remote_docker: 
           docker_layer_caching: true
       - run:
-          command:
-            docker build -t flask-app . && docker images
-            # ./upload_to_dockerhub.sh 
+          command: |
+            docker build -t $DOCKER_APP . 
+            docker images 
+            docker login
+            ./upload_to_dockerhub.sh 
               
       # - setup_remote_docker:
       #     version: 20.10.18
