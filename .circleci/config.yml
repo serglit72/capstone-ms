@@ -31,8 +31,11 @@ jobs:
       - setup_remote_docker: 
           docker_layer_caching: true
       - run:
-          docker build -t flask-app . && ./upload_to_dockerhub.sh 
-               
+          command:
+            docker build -t flask-app . 
+            docker login -u serglit72 -p $DOCKERHUB_PASSWORD
+            # ./upload_to_dockerhub.sh 
+              
       # - setup_remote_docker:
       #     version: 20.10.18
       #     command: |
