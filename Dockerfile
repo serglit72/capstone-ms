@@ -7,7 +7,7 @@ WORKDIR /app
 
 ## Step 2:
 # Copy source code to working directory
-COPY . app.py /app/
+COPY . api.py /app/
 
 ## Step 3:
 # Install packages from requirements.txt
@@ -22,5 +22,5 @@ ENTRYPOINT [ "python" ]
 
 ## Step 5:
 # Run app.py at container: launches Flask web app on localhost:5050
-CMD ["app.py"]
+CMD ["api.py"]
 
