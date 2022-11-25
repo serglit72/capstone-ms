@@ -22,16 +22,16 @@ jobs:
             sudo apt install python3
             sudo apt install python3-pip
             sudo apt install python3-venv curl wget
-            python3 --version
-            make install
+            python3 --version && pwd
+            make install && ls -la
       - save_cache:
           paths:
-            - . /.capstone
+            - .capstone
           key: v1-dependencies-{{ checksum "requirements.txt" }}
       - run:
           name: "lint and pytest: index page and status page"
           command: |
-            source . /.capstone/bin/activate
+            source .capstone/bin/activate
             make lint
             make test
          
