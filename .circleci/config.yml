@@ -34,17 +34,18 @@ jobs:
           command: |
             sudo apt install apt-transport-https ca-certificates curl software-properties-common
             sudo apt install gnupg lsb-release
-      - run:
-          name: "Add GPG key for the official Docker repo to the Ubuntu system"
-          command: |
-            curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -  
-            sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
+            docker images | docker ps
+      # - run:
+      #     name: "Add GPG key for the official Docker repo to the Ubuntu system"
+      #     command: |
+      #       curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -  
+      #       sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
       
-      - run:
-          name: "install docker-ce"
-          command: |
-            sudo apt update
-            sudo apt install docker-ce
+      # - run:
+      #     name: "install docker-ce"
+      #     command: |
+      #       sudo apt update
+      #       sudo apt install docker-ce
 
 
 # Invoke jobs via workflows
