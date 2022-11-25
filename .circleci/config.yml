@@ -13,12 +13,9 @@ jobs:
         auth:
           username: serglit72
           password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
-    
-    # Add steps to the job
-    # See: https://circleci.com/docs/2.0/configuration-reference/#steps
+   
     steps:
       - checkout
-      
       - run:
           name: "Install Python"
           command: | 
@@ -32,7 +29,7 @@ jobs:
           docker_layer_caching: true
       - run:
           command:
-            docker build -t flask-app . && docker login
+            docker build -t flask-app . && docker images
             # ./upload_to_dockerhub.sh 
               
       # - setup_remote_docker:
