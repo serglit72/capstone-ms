@@ -35,7 +35,7 @@ jobs:
       - run:
           name: "lint and pytest: index page and status page"
           command: |
-            source ~/project/.capstones/bin/activate
+            source ~/project/.capstone/bin/activate
             make lint
             make test
          
