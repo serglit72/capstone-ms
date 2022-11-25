@@ -22,27 +22,28 @@ jobs:
             sudo apt install python3-pip
             sudo apt install python3-venv curl wget
             python3 --version
-      - run: 
-          name: "Creating virtual enviromment" 
-          command: |
-            pwd && ls -la
-            python3 -m venv .capstone
-            source .capstone/bin/activate 
-            docker --version > my_test_file.txt
+            make install
+      # - run: 
+      #     name: "Creating virtual enviromment" 
+      #     command: |
+      #       pwd && ls -la
+      #       python3 -m venv .capstone
+      #       source .capstone/bin/activate 
+      #       docker --version > my_test_file.txt
              
-      - run:
-          name: "Download hadolint"
-          command: |
-            pip install --upgrade pip
-            pip install -r requirements.txt
-            # This is linter for Dockerfiles
-            wget -O hadolint https://github.com/hadolint/hadolint/releases/download/v2.12.0/hadolint-Linux-x86_64
-            chmod +x hadolint && ./hadolint Dockerfile
+      # - run:
+      #     name: "Download hadolint"
+      #     command: |
+      #       pip install --upgrade pip
+      #       pip install -r requirements.txt
+      #       # This is linter for Dockerfiles
+      #       wget -O hadolint https://github.com/hadolint/hadolint/releases/download/v2.12.0/hadolint-Linux-x86_64
+      #       chmod +x hadolint && ./hadolint Dockerfile
             
-      - run: 
-          name: "Test Python scripts using lints"
-          command: |
-            ./pylint --disable=R,C,W1203,W1202 app.py 
+      # - run: 
+      #     name: "Test Python scripts using lints"
+      #     command: |
+      #       ./pylint --disable=R,C,W1203,W1202 app.py 
 ### This is a linter for Python source code linter: https://www.pylint.org/
 ### This should be run from inside a virtualenv
       # - run:
