@@ -1,8 +1,8 @@
 setup:
 	# Create python virtualenv & source it
-	mkdir .capstone
-	python3 -m venv .capstone
-	source .capstone/bin/activate
+	mkdir capstone
+	python3 -m venv capstone/venv
+	source capstone/venv/bin/activate
 	
 
 install:
@@ -10,11 +10,11 @@ install:
 	pip install --upgrade pip &&\
 	pip install -r requirements.txt
 	wget -O hadolint https://github.com/hadolint/hadolint/releases/download/v2.12.0/hadolint-Linux-x86_64 &&\
-	chmod +x hadolint
+	chmod +x hadolint 
 	
 test:
 	# Additional, optional, tests could go here
-	python -m pytest -vv ./tests/
+	python3 -m pytest -vv ./tests/
 
 lint:
 	# See local hadolint install instructions:   https://github.com/hadolint/hadolint
@@ -23,7 +23,6 @@ lint:
 	hadolint Dockerfile
 	# This is a linter for Python source code linter: https://www.pylint.org/
 	# This should be run from inside a virtualenv
-	pylint mydir
 	pylint --disable=R,C,W1203,W1202 app.py
 
 all: install lint test
