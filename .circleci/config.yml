@@ -29,6 +29,7 @@ jobs:
             python3 -m venv .capstone
             source .capstone/bin/activate 
             sudo docker --version
+            pwd
       - run:
           name: "Install additional commons"
           command: |
