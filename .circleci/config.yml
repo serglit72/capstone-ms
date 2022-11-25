@@ -19,6 +19,7 @@ jobs:
           command: | 
             sudo apt update
             sudo apt install python3.9-minimal
+            sudo apt install python3-pip
 
       - run: 
           name: "Creating enviromment" 
