@@ -20,13 +20,30 @@ jobs:
             sudo apt update
             sudo apt install python3.9-minimal
             sudo apt install python3-pip
+            sudo apt install python3.8-venv
             python3 --version
       - run: 
           name: "Creating virtual enviromment" 
           command: |
-            pip3 install virtualenv
             python3 -m venv .capstone && .capstone/bin/activate 
-            pwd && ls -la && python3 --version
+            pwd && ls -la 
+            sudo docker --version
+      - run:
+          name: "Install additional commons"
+          command: |
+            sudo apt install apt-transport-https ca-certificates curl software-properties-common
+            sudo apt install gnupg lsb-release
+      - run:
+          name: "Add GPG key for the official Docker repo to the Ubuntu system"
+          command: |
+            curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -  
+            sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
+      
+      - run:
+          name: "install docker-ce"
+          command: |
+            sudo apt update
+            sudo apt install docker-ce
 
 
 # Invoke jobs via workflows
