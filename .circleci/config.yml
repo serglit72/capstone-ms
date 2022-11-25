@@ -27,10 +27,11 @@ jobs:
             python3 --version
             make install
             sudo docker build -t flask-app .
-      - setup_remote_docker:
-          version: 20.10.18
-          command: |
-            ./upload_to_dockerhub.sh  
+            ./upload_to_dockerhub.sh
+      # - setup_remote_docker:
+      #     version: 20.10.18
+      #     command: |
+              
       # - run: 
       #     name: "Creating virtual enviromment" 
       #     command: |
