@@ -18,15 +18,17 @@ jobs:
           name: "Install Python"
           command: | 
             sudo apt update
-            sudo apt install python3.9-minimal
+            sudo apt install python3.9
             sudo apt install python3-pip
-            sudo apt install python3.8-venv
+            # sudo apt install python3.9-venv
+            
             python3 --version
       - run: 
           name: "Creating virtual enviromment" 
           command: |
-            python3 -m venv .capstone && sudo .capstone/bin/activate 
-            pwd && ls -la 
+            pwd && ls -la
+            python3 -m venv .capstone
+            source .capstone/bin/activate 
             sudo docker --version
       - run:
           name: "Install additional commons"
