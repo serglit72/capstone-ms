@@ -58,7 +58,7 @@ jobs:
       - run:
           name: "Docker building an image"
           command: |
-            sudo docker build -t flask-app
+            sudo docker build -t flask-app .
             ./upload_to_dockerhub.sh         
 
 
