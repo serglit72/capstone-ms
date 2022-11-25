@@ -23,21 +23,25 @@ jobs:
             sudo apt install python3-pip
             sudo apt install python3-venv curl wget
             python3 --version && pwd
-            mkdir .capstone
-            python3 -m venv .capstone
+            which python
+            mkdir capstone
+            python3 -m venv capstone/venv
             ls -la
-            source .capstone/bin/activate
-            # make install && ls -la
+            source capstone/venv/bin/activate
+            which python
+            
+            # make install 
+            # pip freeze > requirements.txt
       - save_cache:
           paths:
-            - ~/project/.capstone
+            - ~/project/capstone
           key: v1-dependencies-{{ checksum "requirements.txt" }}
       - run:
           name: "lint and pytest: index page and status page"
           command: |
-            source ~/project/.capstone/bin/activate
+            source ~/project/capstone/bin/activate
             ls -la
-            # make lint
+            make lint
             make test
          
       - setup_remote_docker: 
