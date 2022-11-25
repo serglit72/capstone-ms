@@ -38,7 +38,10 @@ jobs:
       - run:
           name: "lint and pytest: index page and status page"
           command: |
-            source ~/project/capstone/venv/bin/activate
+            ls -la
+            which python3
+            source capstone/venv/bin/activate
+            which python3
             ls -la
             make lint
             make test
