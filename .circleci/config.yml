@@ -104,6 +104,8 @@ workflows:
     jobs:
       - build-env
       - test-build:
-          required: build-env
+          requires:
+            - build-env
       - docker-build-push:
-          required: test-build
+          requires: 
+            - test-build
