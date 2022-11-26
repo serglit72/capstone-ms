@@ -10,11 +10,6 @@ jobs:
    
     steps:
       - checkout
-      # - restore_cache:
-      #     keys:
-      #       - v1-dependencies-{{ checksum "requirements.txt" }}
-      # # fallback to using the latest cache if no exact match is found
-      #       - v1-dependencies-
       - run:
           name: "Install Dependencies"
           command: | 
@@ -73,42 +68,10 @@ jobs:
           name: "Build and push Docker image to Dockerhub"
           command: |
             echo "$DOCKERHUB_PASSWORD" | docker login --username $DOCKERHUB_LOGIN --password-stdin
-            docker build -t serglit72/flask-app:latest . && docker rmi 5c88ad954744 192a4678acba ba95f9ba9d26 6670ab78bef6 0996c23b877e 890737d0120f 2229dab5ab20
+            docker rmi $(docker images -a -q)
+            docker build -t serglit72/flask-app:latest . && docker rmi 
             docker push serglit72/flask-app:latest
       
-              
-      
-             
-      # - run:
-      #     name: "Download hadolint"
-      #     command: |
-      #       pip install --upgrade pip
-      #       pip install -r requirements.txt
-      #       # This is linter for Dockerfiles
-      #       wget -O hadolint https://github.com/hadolint/hadolint/releases/download/v2.12.0/hadolint-Linux-x86_64
-      #       chmod +x hadolint && ./hadolint Dockerfile
-            
-      # - run: 
-      #     name: "Test Python scripts using lints"
-      #     command: |
-      #       ./pylint --disable=R,C,W1203,W1202 app.py 
-### This is a linter for Python source code linter: https://www.pylint.org/
-### This should be run from inside a virtualenv
-      # - run:
-      #     name: "Add GPG key for the official Docker repo to the Ubuntu system"
-      #     command: |
-      #       curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -  
-      #       sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
-      
-      # - run:
-      #     name: "Docker building an image"
-      #     command: |
-      #       sudo docker build -t flask-app .
-      #       ./upload_to_dockerhub.sh         
-
-
-# Invoke jobs via workflows
-# See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
   capstone-ms:
     jobs:
