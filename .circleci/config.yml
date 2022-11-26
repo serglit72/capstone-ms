@@ -52,7 +52,7 @@ jobs:
           name: "lint and pytest: index page and status page"
           command: |
             ls -la
-            pylint test/*.py
+            
             . capstone/venv/bin/activate
             make lint
             make test
