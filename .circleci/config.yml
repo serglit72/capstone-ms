@@ -19,15 +19,10 @@ jobs:
           name: "Install Dependencies"
           command: | 
             sudo apt update
-            # sudo apt install python3
-            # sudo apt install python3-pip
-            # sudo apt install python3-venv curl wget
-            # mkdir capstone
-            ls -la 
             python3 -m venv capstone/venv
-            ls -la 
+          
             . capstone/venv/bin/activate
-            # pip install --upgrade pip
+            pip install --upgrade pip
             pip install -r requirements.txt
             
       - persist_to_workspace:
@@ -53,7 +48,6 @@ jobs:
       - run:
           name: "lint and pytest: index page and status page"
           command: |
-            ls -la
             . capstone/venv/bin/activate
             wget -O hadolint https://github.com/hadolint/hadolint/releases/download/v2.12.0/hadolint-Linux-x86_64 &&\
             chmod +x hadolint
@@ -79,17 +73,11 @@ jobs:
           name: "Build and push Docker image to Dockerhub"
           command: |
             echo "$DOCKERHUB_PASSWORD" | docker login --username $DOCKERHUB_LOGIN --password-stdin
-            docker build -t serglit72/flask-app:latest . && docker images
+            docker build -t serglit72/flask-app:latest . && docker rmi 5c88ad954744 192a4678acba ba95f9ba9d26 6670ab78bef6 0996c23b877e 890737d0120f 2229dab5ab20
             docker push serglit72/flask-app:latest
       
               
-      # - run: 
-      #     name: "Creating virtual enviromment" 
-      #     command: |
-      #       pwd && ls -la
-      #       python3 -m venv .capstone
-      #       source .capstone/bin/activate 
-      #       docker --version > my_test_file.txt
+      
              
       # - run:
       #     name: "Download hadolint"
