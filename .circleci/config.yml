@@ -22,7 +22,6 @@ jobs:
             sudo apt install python3
             sudo apt install python3-pip
             sudo apt install python3-venv curl wget
-            make setup
             make install
             pip freeze > requirements.txt
       - persist_to_workspace:
