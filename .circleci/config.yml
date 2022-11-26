@@ -45,24 +45,24 @@ jobs:
             source capstone/venv/bin/activate
             make lint
             make test
-    docker-build-push:
-      docker:
-        - image: cimg/base:2022.06
-      steps:
-        - checkout
-        - restore_cache:
-            keys:
-              - v1-dependencies-{{ checksum "requirements.txt" }}
-        # fallback to using the latest cache if no exact match is found
-              - v1-dependencies-     
-        - setup_remote_docker: 
-            docker_layer_caching: true
-        - run: 
-            name: "Build and push Docker image to Dockerhub"
-            command: |
-              echo "$DOCKERHUB_PASSWORD" | docker login --username $DOCKERHUB_LOGIN --password-stdin
-              docker build -t serglit72/flask-app:latest . && docker images
-              docker push serglit72/flask-app:latest
+  docker-build-push:
+    docker:
+      - image: cimg/base:2022.06
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "requirements.txt" }}
+      # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-     
+      - setup_remote_docker: 
+          docker_layer_caching: true
+      - run: 
+          name: "Build and push Docker image to Dockerhub"
+          command: |
+            echo "$DOCKERHUB_PASSWORD" | docker login --username $DOCKERHUB_LOGIN --password-stdin
+            docker build -t serglit72/flask-app:latest . && docker images
+            docker push serglit72/flask-app:latest
       
               
       # - run: 
