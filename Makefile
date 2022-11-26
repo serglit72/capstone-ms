@@ -16,8 +16,8 @@ install:
 	ls -la capstone/venv
 test:
 	# Additional, optional, tests could go here
-	ls -la ./tests/
-	ls -la capstone/venv
+	ls -la 
+	# ls -la capstone/venv
 	python3 -m pytest -vv ./tests/
 
 lint:

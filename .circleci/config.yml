@@ -31,6 +31,7 @@ jobs:
             which python3
             make install 
             pip freeze > requirements.txt
+            cat requirements.txt
       - save_cache:
           paths:
             - ~/project/
