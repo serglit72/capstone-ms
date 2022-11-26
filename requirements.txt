@@ -9,4 +9,4 @@ serverless-wsgi==3.0.1
 Werkzeug==2.2.2
 zipp==3.10.0
 pylint==2.15.6
-pytest
+pytest==7.2.0
