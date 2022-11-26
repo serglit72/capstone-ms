@@ -22,18 +22,19 @@ jobs:
             sudo apt install python3
             sudo apt install python3-pip
             sudo apt install python3-venv curl wget
-            # python3 --version && pwd
-            # which python3
-            # mkdir capstone
-            # python3 -m venv capstone/venv
-            # ls -la && pip list
-            # source capstone/venv/bin/activate
-            which python3
             make setup
             make install
-            ls -la
             pip freeze > requirements.txt
-            cat requirements.txt
+  test-build:
+    docker:
+      - image: cimg/base:2022.06
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "requirements.txt" }}
+      # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
       - save_cache:
           paths:
             - ~/project/
@@ -44,15 +45,24 @@ jobs:
             source capstone/venv/bin/activate
             make lint
             make test
-         
-      - setup_remote_docker: 
-          docker_layer_caching: true
-      - run: 
-          name: "build and push Docker image to Dockerhub"
-          command: |
-            echo "$DOCKERHUB_PASSWORD" | docker login --username $DOCKERHUB_LOGIN --password-stdin
-            docker build -t serglit72/flask-app:latest . && docker images
-            docker push serglit72/flask-app:latest
+    docker-build-push:
+      docker:
+        - image: cimg/base:2022.06
+      steps:
+        - checkout
+        - restore_cache:
+            keys:
+              - v1-dependencies-{{ checksum "requirements.txt" }}
+        # fallback to using the latest cache if no exact match is found
+              - v1-dependencies-     
+        - setup_remote_docker: 
+            docker_layer_caching: true
+        - run: 
+            name: "Build and push Docker image to Dockerhub"
+            command: |
+              echo "$DOCKERHUB_PASSWORD" | docker login --username $DOCKERHUB_LOGIN --password-stdin
+              docker build -t serglit72/flask-app:latest . && docker images
+              docker push serglit72/flask-app:latest
       
               
       # - run: 
@@ -97,3 +107,5 @@ workflows:
   capstone-ms:
     jobs:
       - build-env
+      - test-build
+      - docker-build-push

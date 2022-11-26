@@ -2,7 +2,6 @@
 
 from flask import Flask,render_template,request
 from flask import json
-import json
 import logging
 import requests
  
@@ -24,7 +23,7 @@ def status():
 
 @app.route('/myip')
 def myip(ip_address=None):
-    test = requests.get("http://ip-api.com/json/"+ip_address)
+    test = requests.get("http://ip-api.com/json/"+ip_address,timeout=3)
     my_ip = test.json()
     response = app.response_class(
             response=json.dumps({ "IP address": my_ip}),
@@ -42,8 +41,6 @@ def hello():
     return render_template("index.html", form=request.form)
     
     # return render_template('index.html', my_ip=my_ip["query"],)
-
-from api import app # Flask instance of the API
 
 
 if __name__ == "__main__":
