@@ -31,13 +31,10 @@ def myip(ip_address=None):
             mimetype='application/json'
     )
     
-    app.logger.info('Metrics request successfull')
-  
     return response
 
 @app.route("/",methods=['GET','POST'])
 def hello():
-    app.logger.info('Main request successfull')
     return render_template("index.html", form=request.form)
     
     # return render_template('index.html', my_ip=my_ip["query"],)
