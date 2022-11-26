@@ -29,7 +29,8 @@ jobs:
             # ls -la && pip list
             # source capstone/venv/bin/activate
             which python3
-            make install 
+            make setup 
+            ls -la
             pip freeze > requirements.txt
             cat requirements.txt
       - save_cache:
