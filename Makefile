@@ -2,8 +2,8 @@ setup:
 	# Create python virtualenv & source it
 	mkdir capstone
 	python3 -m venv capstone/venv
-	ls -la capstone/
-	ls -la capstone/venv
+	ls -la 
+	
 	source capstone/venv/bin/activate
 	ls -la capstone/venv
 
