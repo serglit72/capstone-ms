@@ -22,7 +22,7 @@ jobs:
             sudo apt install python3
             sudo apt install python3-pip
             sudo apt install python3-venv curl wget
-            mkdir capstone
+            # mkdir capstone
             ls -la 
             python3 -m venv capstone/venv
             ls -la 
