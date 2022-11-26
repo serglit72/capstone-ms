@@ -25,20 +25,31 @@ jobs:
             make setup
             make install
             pip freeze > requirements.txt
+      - persist_to_workspace:
+          # Must be an absolute path, or relative path from working_directory. This is a directory on the container which is
+          # taken to be the root directory of the workspace.
+          root: ~/project/
+          # Must be relative path from root
+          paths:
+            - .
+
+
   test-build:
     docker:
       - image: cimg/base:2022.06
     steps:
-      - checkout
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "requirements.txt" }}
+      - attach_workspace:
+          at: ~/project
+      # - restore_cache:
+      #     keys:
+      #       - v1-dependencies-{{ checksum "requirements.txt" }}
       # fallback to using the latest cache if no exact match is found
-            - v1-dependencies-
+            # - v1-dependencies-
       - run:
           name: "lint and pytest: index page and status page"
           command: |
             ls -la
+            # make setup
             . capstone/venv/bin/activate
             make lint
             make test
