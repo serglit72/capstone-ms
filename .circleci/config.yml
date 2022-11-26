@@ -55,7 +55,8 @@ jobs:
             wget -O hadolint https://github.com/hadolint/hadolint/releases/download/v2.12.0/hadolint-Linux-x86_64 &&\
             chmod +x hadolint
             . capstone/venv/bin/activate
-            make lint
+            which python3
+            # make lint
             make test
   
   docker-build-push:
