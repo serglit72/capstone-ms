@@ -13,7 +13,8 @@ install:
 	pip install -r requirements.txt
 	wget -O hadolint https://github.com/hadolint/hadolint/releases/download/v2.12.0/hadolint-Linux-x86_64 &&\
 	chmod +x hadolint 
-	ls -la capstone/venv
+	ls -la
+	# ls -la capstone/venv
 test:
 	# Additional, optional, tests could go here
 	ls -la 
