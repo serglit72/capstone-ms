@@ -37,6 +37,7 @@ jobs:
           # Must be relative path from root
           paths:
             - capstone/venv
+            - ./
       - save_cache:
           key: v1-dependencies-{{ checksum "requirements.txt" }}
           paths:
@@ -57,12 +58,14 @@ jobs:
           name: "lint and pytest: index page and status page"
           command: |
             ls -la
+            . capstone/venv/bin/activate
             wget -O hadolint https://github.com/hadolint/hadolint/releases/download/v2.12.0/hadolint-Linux-x86_64 &&\
             chmod +x hadolint
-            . capstone/venv/bin/activate
-            which python3
-            # make lint
-            make test
+            ./hadolint Dockerfile
+            pylint --disable=R,C,W1203,W1202 api.py
+            # pytest 
+            python3 -m pytest -vv ./tests/
+           
   
   docker-build-push:
     docker:
