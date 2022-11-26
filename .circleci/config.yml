@@ -32,7 +32,10 @@ jobs:
           # Must be relative path from root
           paths:
             - .
-
+      - save_cache:
+          key: v1-dependencies-{{ checksum "requirements.txt" }}
+          paths:
+            - ~/project
 
   test-build:
     docker:
@@ -40,11 +43,11 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/project
-      # - restore_cache:
-      #     keys:
-      #       - v1-dependencies-{{ checksum "requirements.txt" }}
-      # fallback to using the latest cache if no exact match is found
-            # - v1-dependencies-
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "requirements.txt" }}
+      #fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
       - run:
           name: "lint and pytest: index page and status page"
           command: |
