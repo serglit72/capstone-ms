@@ -68,8 +68,8 @@ jobs:
           name: "Build and push Docker image to Dockerhub"
           command: |
             echo "$DOCKERHUB_PASSWORD" | docker login --username $DOCKERHUB_LOGIN --password-stdin
-            docker rmi $(docker images -a -q)
-            docker build -t serglit72/flask-app:latest . && docker rmi 
+            # docker rmi $(docker images -a -q)
+            docker build -t serglit72/flask-app:latest . && docker images
             docker push serglit72/flask-app:latest
       
 workflows:
