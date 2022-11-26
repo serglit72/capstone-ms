@@ -1,6 +1,9 @@
 setup:
 	# Create python virtualenv & source it
+	# Create capstone directory...................................
 	mkdir capstone
+	# check capstone
+	ls -la 
 	python3 -m venv capstone/venv
 	ls -la 
 	
