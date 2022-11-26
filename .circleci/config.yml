@@ -103,5 +103,7 @@ workflows:
   capstone-ms:
     jobs:
       - build-env
-      - test-build
-      - docker-build-push
+      - test-build:
+          required: build-env
+      - docker-build-push:
+          required: test-build
