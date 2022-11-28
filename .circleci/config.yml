@@ -97,9 +97,16 @@ jobs:
         command: |
           eksctl create cluster -f cluster.yml
 
+
+  infrastructure-check:
+    docker:
+    - image: cimg/aws:2022.11
+    steps:
+    - checkout
+
     - run:
         name: "Check cluster info"
-        command: eksctl utils describe-stacks --region=us-west-1 --cluster=capstone
+        command: eksctl utils describe-stacks --region=us-west-1 --cluster=capstone-ci
 
 
 workflows:
@@ -113,5 +120,29 @@ workflows:
     #     requires: 
     #       - test-build
 
-    - infrastructure
+    # - infrastructure
+    - infrastructure-check:
+        requires:
+        - infrastructure
+
+    # - deployment-blue:
+    #     requires:
+    #     - infrastructure
+
+    # - deployment-green:
+    #     requires:
+    #     - infrastructure
+
+    # - test-blue:
+    #     requires:
+    #     - deployment-blue
+
+    # - test-green:
+    #     requires:
+    #     - deployment-green
+
+    # - switch-dns:
+    #     requires:
+    #     - test-green
+    #     - test-blue
 

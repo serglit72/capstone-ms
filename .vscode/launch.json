@@ -1,0 +1,21 @@
+{
+    "configurations": [
+        
+        
+        {
+            "type": "aws-sam",
+            "request": "direct-invoke",
+            "name": "capstone-ms:api.myip (python3.9)",
+            "invokeTarget": {
+                "target": "code",
+                "projectRoot": "${workspaceFolder}/",
+                "lambdaHandler": "api.myip"
+            },
+            "lambda": {
+                "runtime": "python3.9",
+                "payload": {},
+                "environmentVariables": {}
+            }
+        }
+    ]
+}

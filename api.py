@@ -20,7 +20,6 @@ def status():
     return render_template('status.html')
 
 
-
 @app.route('/myip')
 def myip(ip_address=None):
     test = requests.get("http://ip-api.com/json/"+ip_address,timeout=3)
