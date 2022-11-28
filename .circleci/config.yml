@@ -3,126 +3,117 @@ version: 2.1
 jobs:
   build-env:
     docker:
-      - image: cimg/python:3.9
-        auth:
-          username: $DOCKERHUB_LOGIN
-          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
-   
+    - image: cimg/python:3.9
+      auth:
+        username: $DOCKERHUB_LOGIN
+        password: $DOCKERHUB_PASSWORD # context / project UI env-var reference
+
     steps:
-      - checkout
-      - run:
-          name: "Install Dependencies"
-          command: | 
-            sudo apt update
-            python3 -m venv capstone/venv
-          
-            . capstone/venv/bin/activate
-            pip install --upgrade pip
-            pip install -r requirements.txt
-            
-      - persist_to_workspace:
-          # Must be an absolute path, or relative path from working_directory. This is a directory on the container which is
-          # taken to be the root directory of the workspace.
-          root: ~/project
-          # Must be relative path from root
-          paths:
-            - capstone/venv
-            - ./
-      - save_cache:
-          key: v1-dependencies-{{ checksum "requirements.txt" }}
-          paths:
-            - ~/project
+    - checkout
+    - run:
+        name: "Install Dependencies"
+        command: |
+          sudo apt update
+          python3 -m venv capstone/venv
+
+          . capstone/venv/bin/activate
+          pip install --upgrade pip
+          pip install -r requirements.txt
+
+    - persist_to_workspace:
+        # Must be an absolute path, or relative path from working_directory. This is a directory on the container which is
+        # taken to be the root directory of the workspace.
+        root: ~/project
+        # Must be relative path from root
+        paths:
+        - capstone/venv
+        - ./
+    - save_cache:
+        key: v1-dependencies-{{ checksum "requirements.txt" }}
+        paths:
+        - ~/project
 
   test-build:
     docker:
-      - image: cimg/python:3.9
+    - image: cimg/python:3.9
     steps:
-      - attach_workspace:
-          at: ~/project
-  
-      - run:
-          name: "lint and pytest: index page and status page"
-          command: |
-            . capstone/venv/bin/activate
-            wget -O hadolint https://github.com/hadolint/hadolint/releases/download/v2.12.0/hadolint-Linux-x86_64 &&\
-            chmod +x hadolint
-            ./hadolint Dockerfile
-            pylint --disable=R,C,W1203,W1202 api.py
-            # pytest 
-            python3 -m pytest -vv ./tests/
-           
-  
+    - attach_workspace:
+        at: ~/project
+
+    - run:
+        name: "lint and pytest: index page and status page"
+        command: ". capstone/venv/bin/activate\nwget -O hadolint https://github.com/hadolint/hadolint/releases/download/v2.12.0/hadolint-Linux-x86_64 &&\\\nchmod +x hadolint\n./hadolint Dockerfile\npylint --disable=R,C,W1203,W1202 api.py\n# pytest \npython3 -m pytest -vv ./tests/\n#magic___^_^___line\n#magic___^_^___line\n"
   docker-build-push:
     docker:
-      - image: cimg/base:2022.06
+    - image: cimg/base:2022.06
     steps:
-      - checkout
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "requirements.txt" }}
-      # fallback to using the latest cache if no exact match is found
-            - v1-dependencies-     
-      - setup_remote_docker: 
-          docker_layer_caching: true
-      - run: 
-          name: "Build and push Docker image to Dockerhub"
-          command: |
-            echo "$DOCKERHUB_PASSWORD" | docker login --username $DOCKERHUB_LOGIN --password-stdin
-            # docker rmi $(docker images -a -q)
-            docker build -t serglit72/flask-app:latest . && docker images
-            docker push serglit72/flask-app:latest
-  
-  
+    - checkout
+    - restore_cache:
+        keys:
+        - v1-dependencies-{{ checksum "requirements.txt" }}
+        # fallback to using the latest cache if no exact match is found
+        - v1-dependencies-
+    - setup_remote_docker:
+        docker_layer_caching: true
+    - run:
+        name: "Build and push Docker image to Dockerhub"
+        command: |
+          echo "$DOCKERHUB_PASSWORD" | docker login --username $DOCKERHUB_LOGIN --password-stdin
+          # docker rmi $(docker images -a -q)
+          docker build -t serglit72/flask-app:latest . && docker images
+          docker push serglit72/flask-app:latest
+
+
   infrastructure:
     docker:
-      - image: cimg/aws:2022.11
+    - image: cimg/aws:2022.11
     steps:
-      - checkout
-  
-      - run:
-          name: "Install eksctl"
-          command: |
-            # tar --help
-            # eksctl --version
-            curl --location "https://github.com/weaveworks/eksctl/releases/download/v0.121.0/eksctl_Linux_amd64.tar.gz" | tar xz -C /tmp
-            sudo mv /tmp/eksctl /usr/local/bin
-            ls -la /usr/local/bin
+    - checkout
 
-      - run:
-          name: "Install kubectl"
-          command: |
-            # kubectl version --short
-            
-            curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-            sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
-            chmod +x kubectl
-            mkdir -p ~/.local/bin
-            mv ./kubectl ~/.local/bin/kubectl
-            ls -la ~/.local/bin/kubectl
-            kubectl version --client --output=yaml
+    - run:
+        name: "Install eksctl"
+        command: |
+          # tar --help
+          # eksctl --version
+          curl --location "https://github.com/weaveworks/eksctl/releases/download/v0.121.0/eksctl_Linux_amd64.tar.gz" | tar xz -C /tmp
+          sudo mv /tmp/eksctl /usr/local/bin
+          ls -la /usr/local/bin
 
-      - run:
-          name: "create Infrastructure 2 t2.nano in blue and green groups"
-          command: |
-            eksctl create cluster -f cluster.yaml
+    - run:
+        name: "Install kubectl"
+        command: |
+          # kubectl version --short
 
-      - run:
-          name: "Check cluster info"
-          command: eksctl utils describe-stacks --region=us-west-1 --cluster=capstone-cluster
-      
-      
+          curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+          sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+          chmod +x kubectl
+          mkdir -p ~/.local/bin
+          mv ./kubectl ~/.local/bin/kubectl
+          ls -la ~/.local/bin/kubectl
+          kubectl version --client --output=yaml
+
+    - run:
+        name: "create Infrastructure 2 t2.nano in blue and green groups"
+        command: |
+          eksctl create cluster -f cluster.yml
+
+    - run:
+        name: "Check cluster info"
+        command: eksctl utils describe-stacks --region=us-west-1 --cluster=capstone-cluster
+
+
 
 
 workflows:
   capstone-ms:
     jobs:
-      # - build-env
-      # - test-build:
-      #     requires:
-      #       - build-env
-      # - docker-build-push:
-      #     requires: 
-      #       - test-build
+    # - build-env
+    # - test-build:
+    #     requires:
+    #       - build-env
+    # - docker-build-push:
+    #     requires: 
+    #       - test-build
 
-      - infrastructure
+    - infrastructure
 
