@@ -121,9 +121,9 @@ workflows:
     #       - test-build
 
     # - infrastructure
-    - infrastructure-check:
-        requires:
-        - infrastructure
+    - infrastructure-check
+    # requires:
+    # - infrastructure
 
     # - deployment-blue:
     #     requires:
