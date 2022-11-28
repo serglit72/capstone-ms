@@ -112,7 +112,7 @@ jobs:
           mv ./kubectl ~/.local/bin/kubectl
           ls -la ~/.local/bin/kubectl
           kubectl version --client --output=yaml
-          export KUBECONFIG=$(aws eks update-kubeconfig --name capstone-ci --region us-west-1)
+          aws eks update-kubeconfig --name capstone-ci --region us-west-1
           kubectl get nodes
 
 
@@ -139,10 +139,10 @@ jobs:
     # - restore_cache:
     #     keys:
     #     - eks-kube-dependency
-    # - run: aws eks update-kubeconfig --name capstone-ci --region us-west-1
+    - run: aws eks update-kubeconfig --name capstone-ci --region us-west-1
     - run: kubectl config current-context && kubectl config get-context && kubectl config get-clusters
     - run: kubectl config view
-      # kubectl get nodes
+    - run: kubectl get nodes
 
 
 workflows:
