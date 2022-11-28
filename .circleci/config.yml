@@ -114,21 +114,32 @@ jobs:
           kubectl version --client --output=yaml
           aws eks update-kubeconfig --name capstone-ci --region us-west-1
           kubectl get nodes
-          kubectl config view
+          kubectl config view > new_eks_config
 
-    - save_cache:
-        key: eks-kube-dependency
+    # - save_cache:
+    #     key: eks-kube-dependency
+    #     paths:
+    #     - ~/project
+    - persist_to_workspace:
+        # Must be an absolute path, or relative path from working_directory. This is a directory on the container which is
+        # taken to be the root directory of the workspace.
+        root: ~/project
+        # Must be relative path from root
         paths:
-        - ~/project
+        - ~/.kube/
+        - ./
 
   deployment-blue:
     docker:
     - image: cimg/aws:2022.11
     steps:
     - checkout
-    - restore_cache:
-        keys:
-        - eks-kube-dependency
+
+    - attach_workspace:
+        at: ~/project
+    # - restore_cache:
+    #     keys:
+    #     - eks-kube-dependency
     - run: kubectl config view
     - run: ls -la
       # kubectl get nodes
