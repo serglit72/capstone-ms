@@ -93,15 +93,13 @@ jobs:
           kubectl version --client --output=yaml
 
     - run:
-        name: "create Infrastructure 2 t2.nano in blue and green groups"
+        name: "create Infrastructure 2 t2.micro in blue and green groups"
         command: |
           eksctl create cluster -f cluster.yml
 
     - run:
         name: "Check cluster info"
         command: eksctl utils describe-stacks --region=us-west-1 --cluster=capstone-cluster
-
-
 
 
 workflows:
