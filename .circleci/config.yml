@@ -112,6 +112,7 @@ jobs:
           mv ./kubectl ~/.local/bin/kubectl
           ls -la ~/.local/bin/kubectl
           kubectl version --client --output=yaml
+          aws eks update-kubeconfig --name capstone-ci --region us-west-1
           kubectl get nodes
 
 workflows:
