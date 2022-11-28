@@ -4,8 +4,8 @@ kind: ClusterConfig
 
 metadata:
   name: capstone
-  region: us-west-1
-  zones: us-west-1a,us-west-1b,us-west-1c
+  # region: us-west-1
+  # zones: us-west-1a,us-west-1b,us-west-1c
 nodeGroups:
 - name: blue-group
   instanceType: t2.micro
