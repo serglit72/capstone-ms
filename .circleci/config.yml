@@ -91,7 +91,7 @@ jobs:
       - run:
           name: "Install kubectl"
           command: |
-            kubectl version --short
+            # kubectl version --short
             
             # curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
             # curl -LO "https://dl.k8s.io/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl.sha256
@@ -102,6 +102,7 @@ jobs:
             # mv ./kubectl ~/.local/bin/kubectl
             # kubectl version --client
             ls -la /usr/local/bin/
+            ls -la
 
 
 workflows:
