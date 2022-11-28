@@ -120,7 +120,6 @@ jobs:
         key: eks-kube-dependency
         paths:
         - ~/project
-        - ~/.kube
 
   deployment-blue:
     docker:
@@ -130,7 +129,9 @@ jobs:
     - restore_cache:
         keys:
         - eks-kube-dependency
-    - run: kubectl get nodes
+    - run: kubectl config view
+    - run: ls -la
+      # kubectl get nodes
 
 
 workflows:
