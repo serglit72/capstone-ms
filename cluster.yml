@@ -3,13 +3,16 @@ apiVersion: eksctl.io/v1alpha5
 kind: ClusterConfig
 
 metadata:
-  name: capstone
+  name: capstone-ci
   region: us-west-1
+  keypair: devops-key
 
 nodeGroups:
 - name: blue-group
   instanceType: t2.micro
   desiredCapacity: 2
+  tag: blue-node
 - name: green-group
   instanceType: t2.micro
   desiredCapacity: 2
+  tag: green-node
