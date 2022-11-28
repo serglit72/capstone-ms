@@ -100,7 +100,6 @@ jobs:
             chmod +x kubectl
             mkdir -p ~/.local/bin
             mv ./kubectl ~/.local/bin/kubectl
-            kubectl version --short
             ls -la ~/.local/bin/kubectl
             
 
