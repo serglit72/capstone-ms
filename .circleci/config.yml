@@ -78,18 +78,6 @@ jobs:
           sudo mv /tmp/eksctl /usr/local/bin
           ls -la /usr/local/bin
 
-    - run:
-        name: "Install kubectl"
-        command: |
-          # kubectl version --short
-
-          curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-          sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
-          chmod +x kubectl
-          mkdir -p ~/.local/bin
-          mv ./kubectl ~/.local/bin/kubectl
-          ls -la ~/.local/bin/kubectl
-          kubectl version --client --output=yaml
 
     - run:
         name: "create Infrastructure 2 t2.micro in blue and green groups"
@@ -112,7 +100,19 @@ jobs:
     - run:
         name: "Check cluster info"
         command: eksctl utils describe-stacks --region=us-west-1 --cluster=capstone-ci
+    - run:
+        name: "Install kubectl"
+        command: |
+          # kubectl version --short
 
+          curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+          sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+          chmod +x kubectl
+          mkdir -p ~/.local/bin
+          mv ./kubectl ~/.local/bin/kubectl
+          ls -la ~/.local/bin/kubectl
+          kubectl version --client --output=yaml
+          kubectl get nodes
 
 workflows:
   capstone-ms:
