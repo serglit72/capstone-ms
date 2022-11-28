@@ -139,8 +139,9 @@ jobs:
     # - restore_cache:
     #     keys:
     #     - eks-kube-dependency
-    - run: kubectl config view
+    - run: kubectl config view && kubectl config < new_eks_config
     - run: ls -la
+    - run: kubectl config view
       # kubectl get nodes
 
 
