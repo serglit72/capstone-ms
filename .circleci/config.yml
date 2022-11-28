@@ -140,7 +140,7 @@ jobs:
     #     keys:
     #     - eks-kube-dependency
     - run: aws eks update-kubeconfig --name capstone-ci --region us-west-1
-    - run: kubectl config current-context && kubectl config get-context && kubectl config get-clusters
+    - run: kubectl config current-context
     - run: kubectl config view
     - run: kubectl get nodes
 
