@@ -115,7 +115,7 @@ jobs:
           aws eks update-kubeconfig --name capstone-ci --region us-west-1
           kubectl get nodes
           kubectl config view > new_eks_config
-          ll && cat new_eks_config
+          ls -la && cat new_eks_config
 
     # - save_cache:
     #     key: eks-kube-dependency
@@ -141,7 +141,7 @@ jobs:
     #     keys:
     #     - eks-kube-dependency
     - run: kubectl config view && kubectl config set new_eks_config
-    - run: ll && cat new_eks_config
+    - run: ls -la && cat new_eks_config
 
     - run: kubectl config view
       # kubectl get nodes
