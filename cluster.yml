@@ -4,12 +4,12 @@ kind: ClusterConfig
 
 metadata:
   name: capstone
-  region: eu-north-1
-
+  region: us-west-1
+  zones: us-west-1a,us-west-1b,us-west-1c
 nodeGroups:
 - name: blue-group
   instanceType: t2.micro
-  desiredCapacity: 2
+  desiredCapacity: 2s
 - name: green-group
   instanceType: t2.micro
   desiredCapacity: 2
