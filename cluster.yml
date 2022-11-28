@@ -10,8 +10,8 @@ nodeGroups:
 - name: blue-group
   instanceType: t2.micro
   desiredCapacity: 2
-  tag: blue-node
+
 - name: green-group
   instanceType: t2.micro
   desiredCapacity: 2
-  tag: green-node
+
