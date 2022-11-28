@@ -5,7 +5,6 @@ kind: ClusterConfig
 metadata:
   name: capstone-ci
   region: us-west-1
-  keypair: devops-key
 
 nodeGroups:
 - name: blue-group
