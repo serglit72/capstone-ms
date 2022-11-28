@@ -86,6 +86,7 @@ jobs:
             # eksctl --version
             curl --location "https://github.com/weaveworks/eksctl/releases/download/v0.121.0/eksctl_Linux_amd64.tar.gz" | tar xz -C /tmp
             sudo mv /tmp/eksctl /usr/local/bin
+            ls -la /usr/local/bin
 
       - run:
           name: "Install kubectl"
@@ -100,6 +101,7 @@ jobs:
             # mkdir -p ~/.local/bin
             # mv ./kubectl ~/.local/bin/kubectl
             # kubectl version --client
+            ls -la /usr/local/bin/
 
 
 workflows:
