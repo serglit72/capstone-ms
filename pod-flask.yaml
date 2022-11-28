@@ -24,7 +24,7 @@ spec:
         app: flask-app
     spec:
       containers:
-        - name: flask-app
-          image: serglit72/flask-app
-          ports:
-          - containerPort: 5050
+      - name: flask-app
+        image: serglit72/flask-app
+        ports:
+        - containerPort: 5050
