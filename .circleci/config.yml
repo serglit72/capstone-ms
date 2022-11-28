@@ -140,9 +140,9 @@ jobs:
     #     keys:
     #     - eks-kube-dependency
     - run: aws eks update-kubeconfig --name capstone-ci --region us-west-1
-    - run: kubectl config current-context
-    - run: kubectl config view
-    - run: kubectl get nodes
+    - run: kubectl create deploy flask-app --image=serglit72/flask-app:latest
+    - run: kubectl get deploy,rs,svc,pods
+      # - run: kubectl get nodes && port-forward pod/python-helloworld-84857d9565-2598m --address 0.0.0.0 5000:5000
 
 
 workflows:
