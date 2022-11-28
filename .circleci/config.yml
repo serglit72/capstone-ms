@@ -114,11 +114,13 @@ jobs:
           kubectl version --client --output=yaml
           aws eks update-kubeconfig --name capstone-ci --region us-west-1
           kubectl get nodes
+          kubectl config view
 
     - save_cache:
         key: eks-kube-dependency
         paths:
         - ~/project
+        - ~/.kube
 
   deployment-blue:
     docker:
