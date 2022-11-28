@@ -79,14 +79,14 @@ jobs:
     steps:
       - checkout
   
-      # - run:
-      #     name: "Install eksctl"
-      #     command: |
-      #       # tar --help
-      #       # eksctl --version
-      #       curl --location "https://github.com/weaveworks/eksctl/releases/download/v0.121.0/eksctl_Linux_amd64.tar.gz" | tar xz -C /tmp
-      #       sudo mv /tmp/eksctl /usr/local/bin
-      #       ls -la /usr/local/bin
+      - run:
+          name: "Install eksctl"
+          command: |
+            # tar --help
+            # eksctl --version
+            curl --location "https://github.com/weaveworks/eksctl/releases/download/v0.121.0/eksctl_Linux_amd64.tar.gz" | tar xz -C /tmp
+            sudo mv /tmp/eksctl /usr/local/bin
+            ls -la /usr/local/bin
 
       - run:
           name: "Install kubectl"
@@ -100,7 +100,17 @@ jobs:
             mv ./kubectl ~/.local/bin/kubectl
             ls -la ~/.local/bin/kubectl
             kubectl version --client --output=yaml
-            
+
+      - run:
+          name: "create Infrastructure 2 t2.nano in blue and green groups"
+          command: |
+            eksctl create cluster -f cluster.yaml
+
+      - run:
+          name: "Check cluster info"
+          command: eksctl utils describe-stacks --region=us-west-1 --cluster=capstone-cluster
+      
+      
 
 
 workflows:
