@@ -82,10 +82,11 @@ jobs:
       - run:
           name: "Install eksctl"
           command: |
-            # sudo apt install tar
-            eksctl --version
-            curl --location "https://github.com/weaveworks/eksctl/releases/download/latest_release/eksctl_Linux_amd64.tar.gz" #| tar xz -C /tmp
-            #sudo mv /tmp/eksctl /usr/local/bin
+            tar --help
+            # eksctl --version
+            curl --location "https://github.com/weaveworks/eksctl/releases/download/v0.121.0/eksctl_Linux_amd64.tar.gz" | tar xz -C /tmp
+            sudo mv /tmp/eksctl /usr/local/bin
+
       - run:
           name: "Install kubectl"
           command: |
