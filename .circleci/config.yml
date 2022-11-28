@@ -126,8 +126,8 @@ jobs:
         root: ~/project
         # Must be relative path from root
         paths:
-        - ~/.kube/
-        - ./
+        - .kube/
+
 
   deployment-blue:
     docker:
