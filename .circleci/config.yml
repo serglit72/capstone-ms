@@ -115,6 +115,22 @@ jobs:
           aws eks update-kubeconfig --name capstone-ci --region us-west-1
           kubectl get nodes
 
+    - save_cache:
+        key: eks-kube-dependency
+        paths:
+        - ~/project
+
+  deployment-blue:
+    docker:
+    - image: cimg/aws:2022.11
+    steps:
+    - checkout
+    - restore_cache:
+        keys:
+        - eks-kube-dependency
+    - run: kubectl get nodes
+
+
 workflows:
   capstone-ms:
     jobs:
@@ -131,9 +147,9 @@ workflows:
     # requires:
     # - infrastructure
 
-    # - deployment-blue:
-    #     requires:
-    #     - infrastructure
+    - deployment-blue:
+        requires:
+        - infrastructure-check
 
     # - deployment-green:
     #     requires:
