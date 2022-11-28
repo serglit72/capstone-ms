@@ -8,8 +8,8 @@ metadata:
 
 nodeGroups:
   - name: blue-group
-    instanceType: t2.nano
+    instanceType: t2.micro
     desiredCapacity: 2
   - name: green-group
-    instanceType: t2.nano
+    instanceType: t2.micro
     desiredCapacity: 2
