@@ -1,0 +1,9 @@
+{
+    "python.linting.pylintEnabled": true,
+    "python.linting.enabled": true,
+    "yaml.schemas": {
+        ".empty_schema.json": [
+          "ignore/these/files/*.yml"
+        ]
+      }
+}
