@@ -142,7 +142,9 @@ jobs:
     # - restore_cache:
     #     keys:
     #     - eks-kube-dependency
+
     - run: aws eks update-kubeconfig --name capstone-ci --region us-west-1
+    - run: kubectl describe configmap -n kube-system aws-auth
     - run: kubectl apply -f pod-flask.yaml
     # - run: kubectl create deploy flask-app --image=serglit72/flask-app:latest
     - run: kubectl get pods
