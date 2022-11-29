@@ -99,7 +99,10 @@ jobs:
 
     - run:
         name: "Check cluster info"
-        command: eksctl utils describe-stacks --region=us-west-1 --cluster=capstone-ci
+        command: |
+          eksctl utils describe-stacks --region=us-west-1 --cluster=capstone-ci
+          eksctl get iamidentitymapping --cluster capstone-ci --region=us-west-1
+
     - run:
         name: "Install kubectl"
         command: |
@@ -144,7 +147,8 @@ jobs:
     # - run: kubectl create deploy flask-app --image=serglit72/flask-app:latest
     - run: kubectl get pods
       # - run: kubectl port-forward pod/flask-app-78c869bf94-chkh2 --address 0.0.0.0 5000:5050 | curl http://localhost:5000/status | grep "<h1>STATUS</h1>"
-    - run: eksctl get iamidentitymapping --cluster capstone-ci --region=us-west-1
+
+
 
 
 workflows:
