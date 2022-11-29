@@ -117,7 +117,9 @@ jobs:
           kubectl version --client --output=yaml
           aws eks update-kubeconfig --name capstone-ci --region us-west-1
           kubectl get nodes
-
+          kubectl describe -n kube-system configmap/aws-auth
+          kubectl get roles -A
+          kubectl get clusterroles
 
     # - save_cache:
     #     key: eks-kube-dependency
