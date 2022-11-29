@@ -142,8 +142,9 @@ jobs:
     - run: aws eks update-kubeconfig --name capstone-ci --region us-west-1
     - run: kubectl apply -f pod-flask.yaml
     # - run: kubectl create deploy flask-app --image=serglit72/flask-app:latest
-    - run: kubectl get deploy,rs,svc,pods
-    - run: kubectl port-forward pod/flask-app-78c869bf94-chkh2 --address 0.0.0.0 5000:5050 | curl http://localhost:5000/status | grep "<h1>STATUS</h1>"
+    - run: kubectl get pods
+      # - run: kubectl port-forward pod/flask-app-78c869bf94-chkh2 --address 0.0.0.0 5000:5050 | curl http://localhost:5000/status | grep "<h1>STATUS</h1>"
+    - run: eksctl get iamidentitymapping --cluster capstone-ci --region=us-west-1
 
 
 workflows:
