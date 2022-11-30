@@ -5,7 +5,7 @@ commands:
   print_pipeline_id:
     description: "Print a CircleCI workflowID"
     steps:
-      - run: echo ${CIRCLE_JOB}
+      - run: echo ${CIRCLE_JOB[:8]}
   
   destroy_environment:
     parameters:
@@ -16,7 +16,7 @@ commands:
       - run:
           name: Destroy Environments
           command: |
-            aws cloudformation delete-stack --stack-name eks-vpc
+            aws cloudformation delete-stack --stack-name eks-vpc-${CIRCLECI_JOB[:8]}
           when: on_fail     
 
 
@@ -90,16 +90,21 @@ jobs:
           aws-region: AWS_DEFAULT_REGION
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
       - checkout
-      - run:
-          name: "Create VPC for EKS cluster"
-          command: | 
-            aws cloudformation create-stack \
-            --stack-name eks-vpc \
-            --template-body file://eks/amazon-eks-vpc-private-subnets.yaml \
-            --region=us-west-1
-      - destroy_environment:
-          when_to_run: on_fail
+      - print_pipeline_id
+      # - run:
+      #     name: "Create VPC for EKS cluster"
+      #     command: | 
+      #       aws cloudformation create-stack \
+      #       --stack-name eks-vpc-${CIRCLECI_JOB[:8]} \
+      #       --template-body file://eks/amazon-eks-vpc-private-subnets.yaml \
+      #       --region=us-west-1
+      # - destroy_environment:
+      #     when_to_run: on_fail
                
+      # - run:
+      #     name: "Get subnets IDs"
+      #     command: |
+      #       aws cloudformation describe-stacks eks-vpc --text 
 
 
   infrastructure:
