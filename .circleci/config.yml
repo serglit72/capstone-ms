@@ -1,5 +1,19 @@
 version: 2.1
 
+commands:
+  print_pipeline_id:
+    description: "Print a CircleCI workflowID"
+    steps:
+      - run: echo ${CIRCLE_WORKFLOW_ID}
+  
+  destroy_environment:
+    steps:
+      - run:
+          name: Destroy environment
+          command: |
+            aws cloudformation delete-stack --stack-name prod-${CIRCLE_WORKFLOW_ID}
+
+
 jobs:
   build-env:
     docker:
@@ -63,8 +77,25 @@ jobs:
           docker build -t serglit72/flask-app:latest . && docker images
           docker push serglit72/flask-app:latest
 
+  create-vpc-for-kube-cluster:
+    docker:
+    - image: cimg/aws:2022.11
+    steps:
+    - checkout
+    - run:
+        name: "Create VPC for EKS cluster"
+        command: | 
+          aws cloudformation create-stack \
+          --stack-name eks-vpc-${CIRCLE_WORKFLOW_ID}\
+          --template-body /eks/amazon-eks-vpc-private-subnets.yaml \
+          --region=us-west-1
+
+    - destroy_environment:
+          when: on_fail
+
 
   infrastructure:
+
     docker:
     - image: cimg/aws:2022.11
     steps:
@@ -77,13 +108,19 @@ jobs:
           curl --location "https://github.com/weaveworks/eksctl/releases/download/v0.121.0/eksctl_Linux_amd64.tar.gz" | tar xz -C /tmp
           sudo mv /tmp/eksctl /usr/local/bin
           ls -la /usr/local/bin
+# Our cluster consists two node groups
+# Small on-demand node group ‘ng-on-demand’, for ???Jenkins??? master, also you can put some monitoring tools and Vault if needed. 
+# If it’s only for Jenkins you can provision only one regular on-demand EC2 instance. 
+# We want our Jenkins master to always be available that why we not using spot instances in this case.
+# Dynamic node group ‘ng-spot’ of size ‘large’ with minSize of 0 and maxSize of 10, and desiredCapacity of 0, 
+# based on spot instances and scaled by ‘Cluster Autoscaler’ to needed size according to load.
+#
 
 
     - run:
-        name: "create Infrastructure 2 t2.micro in blue and green groups"
+        name: "Create kubernetes cluster on VPC "
         command: |
-          eksctl create cluster -f cluster.yml
-
+          eksctl create cluster -f eks/eks-cluster-spots.yaml
 
   infrastructure-check:
     docker:
@@ -102,7 +139,7 @@ jobs:
         command: |
           eksctl utils describe-stacks --region=us-west-1 --cluster=capstone-ci
           eksctl get iamidentitymapping --cluster capstone-ci --region=us-west-1
-
+          eksctl delete --cluster capstone-ci --region=us-west-1
     - run:
         name: "Install kubectl"
         command: |
@@ -119,7 +156,7 @@ jobs:
           kubectl get nodes
           kubectl describe -n kube-system configmap/aws-auth
           aws sts get-caller-identity
-
+          kubectl delete
 
     # - save_cache:
     #     key: eks-kube-dependency
@@ -165,15 +202,16 @@ workflows:
     # - docker-build-push:
     #     requires: 
     #       - test-build
-
+    - create-vpc-for-kube-cluster
+   
     # - infrastructure
-    - infrastructure-check
+    # - infrastructure-check
     # requires:
     # - infrastructure
 
-    - deployment-blue:
-        requires:
-        - infrastructure-check
+    # - deployment-blue:
+    #     requires:
+    #     - infrastructure-check
 
     # - deployment-green:
     #     requires:

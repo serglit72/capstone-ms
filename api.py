@@ -2,7 +2,7 @@
 
 from flask import Flask,render_template,request
 from flask import json
-import logging
+# import logging
 import requests
  
 
@@ -10,7 +10,6 @@ app = Flask(__name__)
 
 @app.route('/speedtest')
 def speedtest():
-
     return render_template('speedtest.html')
 
 
@@ -19,7 +18,7 @@ def status():
 
     return render_template('status.html')
 
-
+# 
 @app.route('/myip')
 def myip(ip_address=None):
     test = requests.get("http://ip-api.com/json/"+ip_address,timeout=3)
@@ -41,6 +40,6 @@ def hello():
 
 if __name__ == "__main__":
     ## stream logs to a file
-    logging.basicConfig(filename='app.log',level=logging.DEBUG)
+    # logging.basicConfig(filename='app.log',level=logging.DEBUG)
     
     app.run(host='0.0.0.0', port=5050,debug=True)
