@@ -47,7 +47,6 @@ jobs:
         key: v1-dependencies-{{ checksum "requirements.txt" }}
         paths:
         - ~/project
-
   test-build:
     docker:
     - image: cimg/python:3.9
@@ -77,7 +76,6 @@ jobs:
           # docker rmi $(docker images -a -q)
           docker build -t serglit72/flask-app:latest . && docker images
           docker push serglit72/flask-app:latest
-
   create-vpc-for-kube-cluster:
     executor: aws-cli/default
     steps:
@@ -91,11 +89,11 @@ jobs:
           name: "Create VPC for EKS cluster"
           command: | 
             pwd && ls -la
-            aws cloudformation describe-stacks eks-vpc
-            aws cloudformation create-stack \
-            --stack-name eks-vpc \
-            --template-body file://eks/amazon-eks-vpc-private-subnets.yaml \
-            --region=us-west-1
+            aws cloudformation describe-stacks eks-vpcc
+            # aws cloudformation create-stack \
+            # --stack-name eks-vpc \
+            # --template-body file://eks/amazon-eks-vpc-private-subnets.yaml \
+            # --region=us-west-1
       - when:
           condition:
             "1"
@@ -212,10 +210,8 @@ workflows:
     # - docker-build-push:
     #     requires: 
     #       - test-build
-    - create-vpc-for-kube-cluster:
-        requires:
-          - aws-cli/destroy-environment
-   
+    - create-vpc-for-kube-cluster
+  
     # - infrastructure
     # - infrastructure-check
     # requires:
