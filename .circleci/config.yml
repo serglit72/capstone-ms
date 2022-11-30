@@ -16,7 +16,7 @@ commands:
       - run:
           name: Destroy Environments
           command: |
-            aws delete-stack --stack-name eks-vpc
+            aws cloudformation delete-stack --stack-name eks-vpc
           when: on_fail     
 
 
