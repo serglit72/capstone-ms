@@ -1,6 +1,6 @@
 version: 2.1
 orbs:
-  aws-cli: circleci/aws-cli@3.1.1
+  aws-cli: circleci/aws-cli@3.1.3
 commands:
   print_pipeline_id:
     description: "Print a CircleCI workflowID"
@@ -95,8 +95,8 @@ jobs:
             --template-body /eks/amazon-eks-vpc-private-subnets.yaml \
             --region=us-west-1
 
-      - destroy_environment:
-          when: on_fail
+      # - destroy_environment:
+      #     requires: Failed
 
 
   infrastructure:
