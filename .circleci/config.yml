@@ -5,7 +5,9 @@ commands:
   print_pipeline_id:
     description: "Print a CircleCI workflowID"
     steps:
-      - run: echo ${CIRCLE_JOB[:8]}
+      - run:
+         name: "Print a CircleCI CIRCLE_JOB"
+         command: echo ${CIRCLE_JOB}
   
   destroy_environment:
     parameters:
