@@ -92,7 +92,7 @@ jobs:
           command: | 
             aws cloudformation create-stack \
             --stack-name eks-vpc-${CIRCLE_WORKFLOW_ID}\
-            --template-body /eks/amazon-eks-vpc-private-subnets.yaml \
+            --template-body file:///eks/amazon-eks-vpc-private-subnets.yaml \
             --region=us-west-1
 
       # - destroy_environment:
