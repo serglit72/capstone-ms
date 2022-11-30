@@ -91,10 +91,11 @@ jobs:
           name: "Create VPC for EKS cluster"
           command: | 
             pwd && ls -la
-            aws cloudformation create-stack \
-            --stack-name eks-vpc \
-            --template-body file://eks/amazon-eks-vpc-private-subnets.yaml \
-            --region=us-west-1
+            aws cloudformation describe-stacks
+            # aws cloudformation create-stack \
+            # --stack-name eks-vpc \
+            # --template-body file://eks/amazon-eks-vpc-private-subnets.yaml \
+            # --region=us-west-1
 
       # - destroy_environment:
       #     requires: Failed
