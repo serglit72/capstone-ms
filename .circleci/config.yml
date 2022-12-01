@@ -120,7 +120,7 @@ jobs:
         root: ~/project
         # Must be relative path from root
         paths:
-        - ./
+        - eks/subnets
 
   configuration-infrastructure:
 
@@ -130,7 +130,7 @@ jobs:
     steps:
     - checkout
     - attach_workspace:
-        at: ~/project
+        at: ~/project/eks
 
     - run:
         name: "Install eksctl"
