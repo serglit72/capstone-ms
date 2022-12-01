@@ -98,6 +98,7 @@ jobs:
       #       aws cloudformation create-stack \
       #       --stack-name eks-vpc-${CIRCLE_WORKFLOW_ID:0:7} \
       #       --template-body file://eks/amazon-eks-vpc-private-subnets.yaml \
+             #--parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}" \
       #       --region=us-west-1
       # - destroy_environment:
       #     when_to_run: on_fail
@@ -106,7 +107,11 @@ jobs:
           name: "Get subnets IDs" ###--query 'Reservations[*].Instances[*].PublicIpAddress' --output text >> ~/inventory-6 
           command: |
             # aws cloudformation describe-stacks --stack-name eks-vpc-${CIRCLE_WORKFLOW_ID:0:7}
-            aws cloudformation describe-stacks --stack-name eks-vpc-9b633a6
+            export Pivate-Sub-1=$(aws cloudformation describe-stack-resources --stack-name eks-vpc-9b633a6 --query 'StackResources[?LogicalResourceId==`PrivateSubnet01`].PhysicalResourceId') > subnets
+            export Pivate-Sub-2=$(aws cloudformation describe-stack-resources --stack-name eks-vpc-9b633a6 --query 'StackResources[?LogicalResourceId==`PrivateSubnet02`].PhysicalResourceId') >> subnets
+            export Public-Sub-1=$(aws cloudformation describe-stack-resources --stack-name eks-vpc-9b633a6 --query 'StackResources[?LogicalResourceId==`PublicSubnet01`].PhysicalResourceId') >> subnets
+            export Public-Sub-2=$(aws cloudformation describe-stack-resources --stack-name eks-vpc-9b633a6 --query 'StackResources[?LogicalResourceId==`PublicSubnet02`].PhysicalResourceId') >> subnets 
+            cat subnets
   infrastructure:
 
     docker:
