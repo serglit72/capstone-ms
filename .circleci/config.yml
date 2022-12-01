@@ -155,14 +155,9 @@ jobs:
 
           curl --location "https://github.com/weaveworks/eksctl/releases/download/v0.121.0/eksctl_Linux_amd64.tar.gz" | tar xz -C /tmp
           sudo mv /tmp/eksctl /usr/local/bin
-          ls -la /usr/local/bin
-          eksctl version
-          echo $PUBLIC_SUB_02
-          pwd
-          echo ${PUBLIC_SUB_01}
-          echo ${PUBLIC_SUB_02}
-          echo ${PRIVATE_SUB_01}
-          echo ${PRIVATE_SUB_02}
+          
+          eksctl create cluster -f eks/eks-cluster-spots.yaml
+
         # Our cluster consists two node groups
         # Small on-demand node group ‘ng-on-demand’, for ???Jenkins??? master, also you can put some monitoring tools and Vault if needed. 
         # If it’s only for Jenkins you can provision only one regular on-demand EC2 instance. 
