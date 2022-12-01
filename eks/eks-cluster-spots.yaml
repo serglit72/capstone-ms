@@ -7,14 +7,14 @@ vpc:
   subnets:
     private:
       us-west-1a:
-        id: ${PRIVATE_SUB_01}
+        id: $PRIVATE_SUB_01
       us-west-1b:
-        id: ${PRIVATE_SUB_02}
+        id: $PRIVATE_SUB_02
     public:
       us-west-1a:
-        id: ${PUBLIC_SUB_01}
+        id: $PUBLIC_SUB_01
       us-west-1b:
-        id: ${PUBLIC_SUB_02}
+        id: $PUBLIC_SUB_02
 nodeGroups:
 - name: ng-on-demand
   instanceType: t3.large
