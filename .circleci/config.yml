@@ -120,7 +120,7 @@ jobs:
         root: ~/project
         # Must be relative path from root
         paths:
-        - eks/subnets
+        - eks
 
   configuration-infrastructure:
 
