@@ -112,11 +112,12 @@ jobs:
           echo PUBLIC_SUB_01=$(aws cloudformation describe-stack-resources --stack-name eks-vpc-9b633a6 --query 'StackResources[?LogicalResourceId==`PublicSubnet01`].PhysicalResourceId' --output=text) >> eks/subnets
           echo PUBLIC_SUB_02=$(aws cloudformation describe-stack-resources --stack-name eks-vpc-9b633a6 --query 'StackResources[?LogicalResourceId==`PublicSubnet02`].PhysicalResourceId' --output=text) >> eks/subnets
           cat eks/subnets
+          pwd ~
 
     - persist_to_workspace:
         # Must be an absolute path, or relative path from working_directory. This is a directory on the container which is
         # taken to be the root directory of the workspace.
-        root: ~/project
+        root: ~/
         # Must be relative path from root
         paths:
         - eks/subnets
@@ -127,9 +128,9 @@ jobs:
     - image: cimg/aws:2022.11
 
     steps:
-
+    - checkout
     - attach_workspace:
-        at: ~/project
+        at: ~/eks/subnets
 
     - run:
         name: "Install eksctl"
