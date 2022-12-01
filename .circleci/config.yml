@@ -134,10 +134,10 @@ jobs:
     - image: cimg/aws:2022.11
 
     environment:
-      PRIVATE_SUB_01: aws cloudformation describe-stack-resources --stack-name eks-vpc-9b633a6 --query 'StackResources[?LogicalResourceId==`PrivateSubnet01`].PhysicalResourceId' --output=text
-      PRIVATE_SUB_02: aws cloudformation describe-stack-resources --stack-name eks-vpc-9b633a6 --query 'StackResources[?LogicalResourceId==`PrivateSubnet02`].PhysicalResourceId' --output=text
-      PUBLIC_SUB_01: aws cloudformation describe-stack-resources --stack-name eks-vpc-9b633a6 --query 'StackResources[?LogicalResourceId==`PublicSubnet01`].PhysicalResourceId' --output=text
-      PUBLIC_SUB_02: aws cloudformation describe-stack-resources --stack-name eks-vpc-9b633a6 --query 'StackResources[?LogicalResourceId==`PublicSubnet02`].PhysicalResourceId' --output=text
+      PRIVATE_SUB_01: echo $(aws cloudformation describe-stack-resources --stack-name eks-vpc-9b633a6 --query 'StackResources[?LogicalResourceId==`PrivateSubnet01`].PhysicalResourceId' --output=text)
+      PRIVATE_SUB_02: echo $(aws cloudformation describe-stack-resources --stack-name eks-vpc-9b633a6 --query 'StackResources[?LogicalResourceId==`PrivateSubnet02`].PhysicalResourceId' --output=text
+      PUBLIC_SUB_01: echo $(aws cloudformation describe-stack-resources --stack-name eks-vpc-9b633a6 --query 'StackResources[?LogicalResourceId==`PublicSubnet01`].PhysicalResourceId' --output=text)
+      PUBLIC_SUB_02: echo $(aws cloudformation describe-stack-resources --stack-name eks-vpc-9b633a6 --query 'StackResources[?LogicalResourceId==`PublicSubnet02`].PhysicalResourceId' --output=text)
 
     steps:
     - checkout
@@ -150,7 +150,7 @@ jobs:
         command: |
           echo ${PUBLIC_SUB_02}
           pwd
-          echo $PUBLIC_SUB_02
+          echo $PUBLIC_SUB_01
           # curl --location "https://github.com/weaveworks/eksctl/releases/download/v0.121.0/eksctl_Linux_amd64.tar.gz" | tar xz -C /tmp
           # sudo mv /tmp/eksctl /usr/local/bin
           # ls -la /usr/local/bin
