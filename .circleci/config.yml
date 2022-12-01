@@ -144,14 +144,14 @@ jobs:
 
     # - attach_workspace:
     #     at: ~/project
-    - run: export PUBLIC_SUB_02=$(aws cloudformation describe-stack-resources --stack-name eks-vpc-9b633a6 --query 'StackResources[?LogicalResourceId==`PublicSubnet02`].PhysicalResourceId' --output=text)
+    - run: export PUBLIC_SUB_02=$(aws cloudformation describe-stack-resources --stack-name eks-vpc-9b633a6 --query 'StackResources[?LogicalResourceId==`PublicSubnet02`].PhysicalResourceId' --output=text)> "$PUBLIC_SUB"
     - run: echo 'export PUBLIC_SUB_01=$(aws cloudformation describe-stack-resources --stack-name eks-vpc-9b633a6 --query 'StackResources[?LogicalResourceId==`PublicSubnet01`].PhysicalResourceId' --output=text)'
     - run:
         name: "Install eksctl"
         command: |
           echo ${PUBLIC_SUB_02}
           pwd
-          echo $PUBLIC_SUB_01
+          echo $PUBLIC_SUB
           # curl --location "https://github.com/weaveworks/eksctl/releases/download/v0.121.0/eksctl_Linux_amd64.tar.gz" | tar xz -C /tmp
           # sudo mv /tmp/eksctl /usr/local/bin
           # ls -la /usr/local/bin
