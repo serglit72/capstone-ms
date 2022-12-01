@@ -130,7 +130,7 @@ jobs:
     steps:
     - checkout
     - attach_workspace:
-        at: ~/project/eks
+        at: ~/project
 
     - run:
         name: "Install eksctl"
