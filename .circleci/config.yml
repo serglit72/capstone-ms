@@ -104,25 +104,37 @@ jobs:
       #     when_to_run: on_fail
                
       - run:
-          name: "Get subnets IDs" ###--query 'Reservations[*].Instances[*].PublicIpAddress' --output text >> ~/inventory-6 
+          name: "Get subnets IDs"  
           command: |
             # aws cloudformation describe-stacks --stack-name eks-vpc-${CIRCLE_WORKFLOW_ID:0:7}
-            export Pivate-Sub-1=$(aws cloudformation describe-stack-resources --stack-name eks-vpc-9b633a6 --query 'StackResources[?LogicalResourceId==`PrivateSubnet01`].PhysicalResourceId') > subnets
-            export Pivate-Sub-2=$(aws cloudformation describe-stack-resources --stack-name eks-vpc-9b633a6 --query 'StackResources[?LogicalResourceId==`PrivateSubnet02`].PhysicalResourceId') >> subnets
-            export Public-Sub-1=$(aws cloudformation describe-stack-resources --stack-name eks-vpc-9b633a6 --query 'StackResources[?LogicalResourceId==`PublicSubnet01`].PhysicalResourceId') >> subnets
-            export Public-Sub-2=$(aws cloudformation describe-stack-resources --stack-name eks-vpc-9b633a6 --query 'StackResources[?LogicalResourceId==`PublicSubnet02`].PhysicalResourceId') >> subnets 
+            echo PRIVATE_SUB_01=$(aws cloudformation describe-stack-resources --stack-name eks-vpc-9b633a6 --query 'StackResources[?LogicalResourceId==`PrivateSubnet01`].PhysicalResourceId' --output=text) > subnets
+            echo PRIVATE_SUB_02=$(aws cloudformation describe-stack-resources --stack-name eks-vpc-9b633a6 --query 'StackResources[?LogicalResourceId==`PrivateSubnet02`].PhysicalResourceId' --output=text) >> subnets
+            echo PUBLIC_SUB_01=$(aws cloudformation describe-stack-resources --stack-name eks-vpc-9b633a6 --query 'StackResources[?LogicalResourceId==`PublicSubnet01`].PhysicalResourceId' --output=text) >> subnets
+            echo PUBLIC_SUB_02=$(aws cloudformation describe-stack-resources --stack-name eks-vpc-9b633a6 --query 'StackResources[?LogicalResourceId==`PublicSubnet02`].PhysicalResourceId' --output=text) >> subnets 
             cat subnets
-  infrastructure:
+
+      - persist_to_workspace:
+        # Must be an absolute path, or relative path from working_directory. This is a directory on the container which is
+        # taken to be the root directory of the workspace.
+          root: ~/project
+        # Must be relative path from root
+          paths:
+          - subnet
+
+  configuration-infrastructure:
 
     docker:
     - image: cimg/aws:2022.11
+    
     steps:
     - checkout
+    - attach_workspace:
+        at: ~/project
 
     - run:
         name: "Install eksctl"
         command: |
-
+          cat subnets
           curl --location "https://github.com/weaveworks/eksctl/releases/download/v0.121.0/eksctl_Linux_amd64.tar.gz" | tar xz -C /tmp
           sudo mv /tmp/eksctl /usr/local/bin
           ls -la /usr/local/bin
@@ -222,10 +234,10 @@ workflows:
     #       - test-build
     - create-vpc-for-kube-cluster
   
-    # - infrastructure
+    # - configuration-infrastructure
     # - infrastructure-check
     # requires:
-    # - infrastructure
+    # - configuration-infrastructure
 
     # - deployment-blue:
     #     requires:
@@ -233,7 +245,7 @@ workflows:
 
     # - deployment-green:
     #     requires:
-    #     - infrastructure
+    #     - configuration-infrastructure
 
     # - test-blue:
     #     requires:
