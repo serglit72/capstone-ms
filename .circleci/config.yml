@@ -7,7 +7,7 @@ commands:
     steps:
       - run:
          name: "Print a CircleCI CIRCLE_JOB"
-         command: echo ${CIRCLE_WORKFLOW_ID[0:8]}
+         command: echo ${CIRCLE_WORKFLOW_ID}[:8]
   
   destroy_environment:
     parameters:
@@ -18,7 +18,7 @@ commands:
       - run:
           name: Destroy Environments
           command: |
-            aws cloudformation delete-stack --stack-name eks-vpc-${CIRCLECI_JOB[:8]}
+            aws cloudformation delete-stack --stack-name eks-vpc-$({CIRCLECI_JOB}[:8])
           when: on_fail     
 
 
@@ -104,11 +104,9 @@ jobs:
       #     when_to_run: on_fail
                
       # - run:
-      #     name: "Get subnets IDs"
+      #     name: "Get subnets IDs" ###--query 'Reservations[*].Instances[*].PublicIpAddress' --output text >> ~/inventory-6 
       #     command: |
-      #       aws cloudformation describe-stacks eks-vpc --text 
-
-
+      #       aws cloudformation describe-stacks eks-vpc --region=us-west-1  
   infrastructure:
 
     docker:
