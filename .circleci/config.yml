@@ -105,7 +105,7 @@ jobs:
       - run:
           name: "Get subnets IDs" ###--query 'Reservations[*].Instances[*].PublicIpAddress' --output text >> ~/inventory-6 
           command: |
-            aws cloudformation describe-stacks -- stack-name eks-vpc-${CIRCLE_WORKFLOW_ID:0:7}
+            aws cloudformation describe-stacks --stack-name eks-vpc-${CIRCLE_WORKFLOW_ID:0:7}
   infrastructure:
 
     docker:
