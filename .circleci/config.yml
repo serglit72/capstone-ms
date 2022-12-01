@@ -237,31 +237,33 @@ workflows:
     #       - test-build
     - create-vpc-for-kube-cluster
 
-    - configuration-infrastructure
-    # - infrastructure-check
-    # requires:
-    # - configuration-infrastructure
+    - configuration-infrastructure:
+        requires:
+        - create-vpc-for-kube-cluster
+        # - infrastructure-check
+        # requires:
+        # - configuration-infrastructure
 
-    # - deployment-blue:
-    #     requires:
-    #     - infrastructure-check
+        # - deployment-blue:
+        #     requires:
+        #     - infrastructure-check
 
-    # - deployment-green:
-    #     requires:
-    #     - configuration-infrastructure
+        # - deployment-green:
+        #     requires:
+        #     - configuration-infrastructure
 
-    # - test-blue:
-    #     requires:
-    #     - deployment-blue
+        # - test-blue:
+        #     requires:
+        #     - deployment-blue
 
-    # - test-green:
-    #     requires:
-    #     - deployment-green
+        # - test-green:
+        #     requires:
+        #     - deployment-green
 
-    # - switch-dns:
-    #     requires:
-    #     - test-green
-    #     - test-blue
+        # - switch-dns:
+        #     requires:
+        #     - test-green
+        #     - test-blue
 
 
 # VS Code Extension Version: 1.2.1
