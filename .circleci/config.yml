@@ -117,7 +117,10 @@ jobs:
           export PUBLIC_SUB_01=$(aws cloudformation describe-stack-resources --stack-name eks-vpc-9b633a6 --query 'StackResources[?LogicalResourceId==`PublicSubnet01`].PhysicalResourceId' --output=text)
           export PUBLIC_SUB_02=$(aws cloudformation describe-stack-resources --stack-name eks-vpc-9b633a6 --query 'StackResources[?LogicalResourceId==`PublicSubnet02`].PhysicalResourceId' --output=text)
 
-
+    - save_cache:
+        key: subnets-env
+        paths:
+        - ~/project
 
     # - persist_to_workspace:
     #     # Must be an absolute path, or relative path from working_directory. This is a directory on the container which is
@@ -134,6 +137,9 @@ jobs:
 
     steps:
     - checkout
+    - restore_cache:
+        keys:
+        - subnets-env
     # - attach_workspace:
     #     at: ~/project
 
