@@ -92,21 +92,20 @@ jobs:
           aws-region: AWS_DEFAULT_REGION
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
       - checkout
-      - print_pipeline_id
-      - run:
-          name: "Create VPC for EKS cluster"
-          command: | 
-            aws cloudformation create-stack \
-            --stack-name eks-vpc-${CIRCLE_WORKFLOW_ID:0:7} \
-            --template-body file://eks/amazon-eks-vpc-private-subnets.yaml \
-            --region=us-west-1
-      - destroy_environment:
-          when_to_run: on_fail
+      # - run:
+      #     name: "Create VPC for EKS cluster"
+      #     command: | 
+      #       aws cloudformation create-stack \
+      #       --stack-name eks-vpc-${CIRCLE_WORKFLOW_ID:0:7} \
+      #       --template-body file://eks/amazon-eks-vpc-private-subnets.yaml \
+      #       --region=us-west-1
+      # - destroy_environment:
+      #     when_to_run: on_fail
                
       - run:
           name: "Get subnets IDs" ###--query 'Reservations[*].Instances[*].PublicIpAddress' --output text >> ~/inventory-6 
           command: |
-            aws cloudformation describe-stacks eks-vpc
+            aws cloudformation describe-stacks -- stack-name eks-vpc-${CIRCLE_WORKFLOW_ID:0:7}
   infrastructure:
 
     docker:
