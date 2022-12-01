@@ -127,7 +127,7 @@ jobs:
     - image: cimg/aws:2022.11
 
     steps:
-    - checkout
+
     - attach_workspace:
         at: ~/project
 
