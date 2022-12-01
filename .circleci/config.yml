@@ -112,14 +112,15 @@ jobs:
           echo PUBLIC_SUB_01=$(aws cloudformation describe-stack-resources --stack-name eks-vpc-9b633a6 --query 'StackResources[?LogicalResourceId==`PublicSubnet01`].PhysicalResourceId' --output=text) >> subnets
           echo PUBLIC_SUB_02=$(aws cloudformation describe-stack-resources --stack-name eks-vpc-9b633a6 --query 'StackResources[?LogicalResourceId==`PublicSubnet02`].PhysicalResourceId' --output=text) >> subnets
           cat subnets
+          pwd && ls -la
 
-    - persist_to_workspace:
-        # Must be an absolute path, or relative path from working_directory. This is a directory on the container which is
-        # taken to be the root directory of the workspace.
-        root: ~/project
-        # Must be relative path from root
-        paths:
-        - /subnets
+        # - persist_to_workspace:
+        #     # Must be an absolute path, or relative path from working_directory. This is a directory on the container which is
+        #     # taken to be the root directory of the workspace.
+        #     root: ~/
+        #     # Must be relative path from root
+        #     paths:
+        #     - subnets
 
   configuration-infrastructure:
 
@@ -236,7 +237,7 @@ workflows:
     #       - test-build
     - create-vpc-for-kube-cluster
 
-    - configuration-infrastructure
+    # - configuration-infrastructure
     # - infrastructure-check
     # requires:
     # - configuration-infrastructure
