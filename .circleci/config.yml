@@ -7,7 +7,7 @@ commands:
     steps:
       - run:
          name: "Print a CircleCI CIRCLE_JOB"
-         command: echo ${CIRCLE_JOB}
+         command: echo ${CIRCLE_WORKFLOW_ID[0:8]}
   
   destroy_environment:
     parameters:
