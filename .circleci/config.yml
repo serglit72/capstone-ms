@@ -105,14 +105,21 @@ jobs:
 
     - run:
         name: "Get subnets IDs"
-        command: "# aws cloudformation describe-stacks --stack-name eks-vpc-${CIRCLE_WORKFLOW_ID:0:7}\necho PRIVATE_SUB_01=$(aws cloudformation describe-stack-resources --stack-name eks-vpc-9b633a6 --query 'StackResources[?LogicalResourceId==`PrivateSubnet01`].PhysicalResourceId' --output=text) > subnets\necho PRIVATE_SUB_02=$(aws cloudformation describe-stack-resources --stack-name eks-vpc-9b633a6 --query 'StackResources[?LogicalResourceId==`PrivateSubnet02`].PhysicalResourceId' --output=text) >> subnets\necho PUBLIC_SUB_01=$(aws cloudformation describe-stack-resources --stack-name eks-vpc-9b633a6 --query 'StackResources[?LogicalResourceId==`PublicSubnet01`].PhysicalResourceId' --output=text) >> subnets\necho PUBLIC_SUB_02=$(aws cloudformation describe-stack-resources --stack-name eks-vpc-9b633a6 --query 'StackResources[?LogicalResourceId==`PublicSubnet02`].PhysicalResourceId' --output=text) >> subnets \ncat subnets\n   #magic___^_^___line\n"
+        command: |
+          #aws cloudformation describe-stacks --stack-name eks-vpc-${CIRCLE_WORKFLOW_ID:0:7}
+          echo PRIVATE_SUB_01=$(aws cloudformation describe-stack-resources --stack-name eks-vpc-9b633a6 --query 'StackResources[?LogicalResourceId==`PrivateSubnet01`].PhysicalResourceId' --output=text) > subnets
+          echo PRIVATE_SUB_02=$(aws cloudformation describe-stack-resources --stack-name eks-vpc-9b633a6 --query 'StackResources[?LogicalResourceId==`PrivateSubnet02`].PhysicalResourceId' --output=text) >> subnets
+          echo PUBLIC_SUB_01=$(aws cloudformation describe-stack-resources --stack-name eks-vpc-9b633a6 --query 'StackResources[?LogicalResourceId==`PublicSubnet01`].PhysicalResourceId' --output=text) >> subnets
+          echo PUBLIC_SUB_02=$(aws cloudformation describe-stack-resources --stack-name eks-vpc-9b633a6 --query 'StackResources[?LogicalResourceId==`PublicSubnet02`].PhysicalResourceId' --output=text) >> subnets
+          cat subnets
+
     - persist_to_workspace:
         # Must be an absolute path, or relative path from working_directory. This is a directory on the container which is
         # taken to be the root directory of the workspace.
         root: ~/project
         # Must be relative path from root
         paths:
-        - .
+        - /subnets
 
   configuration-infrastructure:
 
@@ -127,6 +134,8 @@ jobs:
     - run:
         name: "Install eksctl"
         command: |
+          ls -la
+
           cat subnets
           # curl --location "https://github.com/weaveworks/eksctl/releases/download/v0.121.0/eksctl_Linux_amd64.tar.gz" | tar xz -C /tmp
           # sudo mv /tmp/eksctl /usr/local/bin
