@@ -144,7 +144,7 @@ jobs:
 
     # - attach_workspace:
     #     at: ~/project
-    
+
     - run:
         name: "env vars and Install eksctl"
         command: |
@@ -152,13 +152,17 @@ jobs:
           export PRIVATE_SUB_02=$(aws cloudformation describe-stack-resources --stack-name eks-vpc-9b633a6 --query 'StackResources[?LogicalResourceId==`PrivateSubnet02`].PhysicalResourceId' --output=text)'
           export PUBLIC_SUB_01=$(aws cloudformation describe-stack-resources --stack-name eks-vpc-9b633a6 --query 'StackResources[?LogicalResourceId==`PublicSubnet01`].PhysicalResourceId' --output=text)'
           export PUBLIC_SUB_02=$(aws cloudformation describe-stack-resources --stack-name eks-vpc-9b633a6 --query 'StackResources[?LogicalResourceId==`PublicSubnet02`].PhysicalResourceId' --output=text)'
- 
+
           curl --location "https://github.com/weaveworks/eksctl/releases/download/v0.121.0/eksctl_Linux_amd64.tar.gz" | tar xz -C /tmp
           sudo mv /tmp/eksctl /usr/local/bin
           ls -la /usr/local/bin
           eksctl version
           echo $PUBLIC_SUB_02
-          echo $PUBLIC_SUB_01
+          pwd
+          echo ${PUBLIC_SUB_01}
+          echo ${PUBLIC_SUB_02}
+          echo ${PRIVATE_SUB_01}
+          echo ${PRIVATE_SUB_02}
         # Our cluster consists two node groups
         # Small on-demand node group ‘ng-on-demand’, for ???Jenkins??? master, also you can put some monitoring tools and Vault if needed. 
         # If it’s only for Jenkins you can provision only one regular on-demand EC2 instance. 
@@ -166,7 +170,7 @@ jobs:
         # Dynamic node group ‘ng-spot’ of size ‘large’ with minSize of 0 and maxSize of 10, and desiredCapacity of 0, 
         # based on spot instances and scaled by ‘Cluster Autoscaler’ to needed size according to load.
         #
-          
+
 
     # - run:
     #     name: "Create kubernetes cluster on VPC "
