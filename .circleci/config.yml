@@ -3,16 +3,11 @@ orbs:
   aws-cli: circleci/aws-cli@3.1.3
 commands:
   print_pipeline_id:
-    parameters:
-      id:
-        type: string
+    description: "Print a CircleCI workflowID"
     steps:
-      - run: echo << parameters.id >> 
-    # description: "Print a CircleCI workflowID"
-    # steps:
-    #   - run:
-    #      name: "Print a CircleCI CIRCLE_JOB"
-    #      command: echo ${CIRCLE_WORKFLOW_ID:0:7}
+      - run:
+         name: "Print a CircleCI CIRCLE_JOB"
+         command: echo ${CIRCLE_WORKFLOW_ID:0:7}
   
   destroy_environment:
     parameters:
@@ -23,7 +18,7 @@ commands:
       - run:
           name: Destroy Environments
           command: |
-            aws cloudformation delete-stack --stack-name eks-vpc-$({CIRCLECI_JOB:0:7})
+            aws cloudformation delete-stack --stack-name eks-vpc-${CIRCLE_WORKFLOW_ID:0:7}
           when: on_fail     
 
 
@@ -98,20 +93,20 @@ jobs:
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
       - checkout
       - print_pipeline_id
-      # - run:
-      #     name: "Create VPC for EKS cluster"
-      #     command: | 
-      #       aws cloudformation create-stack \
-      #       --stack-name eks-vpc-${CIRCLECI_JOB[:8]} \
-      #       --template-body file://eks/amazon-eks-vpc-private-subnets.yaml \
-      #       --region=us-west-1
-      # - destroy_environment:
-      #     when_to_run: on_fail
+      - run:
+          name: "Create VPC for EKS cluster"
+          command: | 
+            aws cloudformation create-stack \
+            --stack-name eks-vpc-${CIRCLE_WORKFLOW_ID:0:7} \
+            --template-body file://eks/amazon-eks-vpc-private-subnets.yaml \
+            --region=us-west-1
+      - destroy_environment:
+          when_to_run: on_fail
                
-      # - run:
-      #     name: "Get subnets IDs" ###--query 'Reservations[*].Instances[*].PublicIpAddress' --output text >> ~/inventory-6 
-      #     command: |
-      #       aws cloudformation describe-stacks eks-vpc --region=us-west-1  
+      - run:
+          name: "Get subnets IDs" ###--query 'Reservations[*].Instances[*].PublicIpAddress' --output text >> ~/inventory-6 
+          command: |
+            aws cloudformation describe-stacks eks-vpc
   infrastructure:
 
     docker:
