@@ -119,7 +119,7 @@ jobs:
           root: ~/project
         # Must be relative path from root
           paths:
-          - subnet
+          - .
 
   configuration-infrastructure:
 
