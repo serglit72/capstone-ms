@@ -1,5 +1,6 @@
 #!/bin/bash
 
+cd ~/eks
 # sample value for your variables
 # MYVARVALUE="nginx:latest"
 PRIVATE_SUB_01=$(aws cloudformation describe-stack-resources --stack-name eks-vpc-9b633a6 --query 'StackResources[?LogicalResourceId==`PrivateSubnet01`].PhysicalResourceId' --output=text)
@@ -12,6 +13,7 @@ PUBLIC_SUB_02=$(aws cloudformation describe-stack-resources --stack-name eks-vpc
 
 # read the yml template from a file and substitute the string 
 # {{MYVARNAME}} with the value of the MYVARVALUE variable
+pwd && ls -al
 cat "eks-cluster-spot-copy.yaml" | sed -i 's/PRIVATE_SUB_01/${PRIVATE_SUB_01}/g'
 cat "eks-cluster-spot-copy.yaml" | sed -i 's/PRIVATE_SUB_01/${PRIVATE_SUB_02}/g'
 cat "eks-cluster-spot-copy.yaml" | sed -i 's/PUBLIC_SUB_01/$PUBLIC_SUB_01/g'
