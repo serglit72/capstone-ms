@@ -3,10 +3,10 @@
 cd eks
 # sample value for your variables
 # MYVARVALUE="nginx:latest"
-export PRIVATE_SUB_01=$(aws cloudformation describe-stack-resources --stack-name eks-vpc-9b633a6 --query 'StackResources[?LogicalResourceId==`PrivateSubnet01`].PhysicalResourceId' --output=text)
-export PRIVATE_SUB_02=$(aws cloudformation describe-stack-resources --stack-name eks-vpc-9b633a6 --query 'StackResources[?LogicalResourceId==`PrivateSubnet02`].PhysicalResourceId' --output=text)
-export PUBLIC_SUB_01=$(aws cloudformation describe-stack-resources --stack-name eks-vpc-9b633a6 --query 'StackResources[?LogicalResourceId==`PublicSubnet01`].PhysicalResourceId' --output=text)
-export PUBLIC_SUB_02=$(aws cloudformation describe-stack-resources --stack-name eks-vpc-9b633a6 --query 'StackResources[?LogicalResourceId==`PublicSubnet02`].PhysicalResourceId' --output=text)
+PRIVATE_SUB_01=(aws cloudformation describe-stack-resources --stack-name eks-vpc-9b633a6 --query 'StackResources[?LogicalResourceId==`PrivateSubnet01`].PhysicalResourceId' --output=text)
+PRIVATE_SUB_02=(aws cloudformation describe-stack-resources --stack-name eks-vpc-9b633a6 --query 'StackResources[?LogicalResourceId==`PrivateSubnet02`].PhysicalResourceId' --output=text)
+PUBLIC_SUB_01=(aws cloudformation describe-stack-resources --stack-name eks-vpc-9b633a6 --query 'StackResources[?LogicalResourceId==`PublicSubnet01`].PhysicalResourceId' --output=text)
+PUBLIC_SUB_02=(aws cloudformation describe-stack-resources --stack-name eks-vpc-9b633a6 --query 'StackResources[?LogicalResourceId==`PublicSubnet02`].PhysicalResourceId' --output=text)
 
 # curl --location "https://github.com/weaveworks/eksctl/releases/download/v0.121.0/eksctl_Linux_amd64.tar.gz" | tar xz -C /tmp
 
@@ -15,10 +15,10 @@ export PUBLIC_SUB_02=$(aws cloudformation describe-stack-resources --stack-name 
 # {{MYVARNAME}} with the value of the MYVARVALUE variable
 echo "I'm in $pwd" 
 
-cat "eks-cluster-spot-copy.yaml" | sed "s/PRIVATE_SUB_01/echo $PRIVATE_SUB_01/g"
-cat "eks-cluster-spot-copy.yaml" | sed "s/PRIVATE_SUB_01/echo $PRIVATE_SUB_02/g"
-cat "eks-cluster-spot-copy.yaml" | sed "s/PUBLIC_SUB_01/echo $PUBLIC_SUB_01/g"
-cat "eks-cluster-spot-copy.yaml" | sed "s/PUBLIC_SUB_02/echo $PUBLIC_SUB_02/g"
+cat "eks-cluster-spot-copy.yaml" | sed "s/PRIVATE_SUB_01/$PRIVATE_SUB_01/g"
+cat "eks-cluster-spot-copy.yaml" | sed "s/PRIVATE_SUB_01/$PRIVATE_SUB_02/g"
+cat "eks-cluster-spot-copy.yaml" | sed "s/PUBLIC_SUB_01/$PUBLIC_SUB_01/g"
+cat "eks-cluster-spot-copy.yaml" | sed "s/PUBLIC_SUB_02/$PUBLIC_SUB_02/g"
 #sed "s/{{MYVARNAME}}/$MYVARVALUE/g"`
 ls -la
 cat "eks-cluster-spot-copy.yaml"
