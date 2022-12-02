@@ -14,10 +14,11 @@ PUBLIC_SUB_02=$(aws cloudformation describe-stack-resources --stack-name eks-vpc
 # read the yml template from a file and substitute the string 
 # {{MYVARNAME}} with the value of the MYVARVALUE variable
 pwd && ls -al
-cat "eks-cluster-spot-copy.yaml" | sed -i 's/PRIVATE_SUB_01/${PRIVATE_SUB_01}/g'
-cat "eks-cluster-spot-copy.yaml" | sed -i 's/PRIVATE_SUB_01/${PRIVATE_SUB_02}/g'
-cat "eks-cluster-spot-copy.yaml" | sed -i 's/PUBLIC_SUB_01/$PUBLIC_SUB_01/g'
-cat "eks-cluster-spot-copy.yaml" | sed -i 's/PUBLIC_SUB_02/$PUBLIC_SUB_02/g'
+cat "eks-cluster-spot-copy.yaml" | sed 's/PRIVATE_SUB_01/${PRIVATE_SUB_01}/g'
+# cat "eks-cluster-spot-copy.yaml" | sed -i 's/PRIVATE_SUB_01/${PRIVATE_SUB_01}/g'
+# cat "eks-cluster-spot-copy.yaml" | sed -i 's/PRIVATE_SUB_01/${PRIVATE_SUB_02}/g'
+# cat "eks-cluster-spot-copy.yaml" | sed -i 's/PUBLIC_SUB_01/$PUBLIC_SUB_01/g'
+# cat "eks-cluster-spot-copy.yaml" | sed -i 's/PUBLIC_SUB_02/$PUBLIC_SUB_02/g'
 #sed "s/{{MYVARNAME}}/$MYVARVALUE/g"`
 ls -la
 cat "eks-cluster-spot-copy.yaml"

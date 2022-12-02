@@ -160,6 +160,7 @@ jobs:
           # echo $PUBLIC_SUB_02
           cd eks && ls -la | grep "eks-template-update.sh"
           chmod +x eks-template-update.sh
+          chmod +w eks-cluster-spot-copy.yaml
           ./eks-template-update.sh
           
           
