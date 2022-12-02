@@ -141,9 +141,8 @@ jobs:
 
     steps:
     - checkout
-
-    - attach_workspace:
-        at: ~/project
+    # - attach_workspace:
+    #     at: ~/project
 
     - run:
         name: "env vars and Install eksctl"
