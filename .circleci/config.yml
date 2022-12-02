@@ -142,8 +142,8 @@ jobs:
     steps:
     - checkout
 
-    # - attach_workspace:
-    #     at: ~/project
+    - attach_workspace:
+        at: ~/project
 
     - run:
         name: "env vars and Install eksctl"
@@ -152,16 +152,16 @@ jobs:
           export PRIVATE_SUB_02=$(aws cloudformation describe-stack-resources --stack-name eks-vpc-9b633a6 --query 'StackResources[?LogicalResourceId==`PrivateSubnet02`].PhysicalResourceId' --output=text)
           export PUBLIC_SUB_01=$(aws cloudformation describe-stack-resources --stack-name eks-vpc-9b633a6 --query 'StackResources[?LogicalResourceId==`PublicSubnet01`].PhysicalResourceId' --output=text)
           export PUBLIC_SUB_02=$(aws cloudformation describe-stack-resources --stack-name eks-vpc-9b633a6 --query 'StackResources[?LogicalResourceId==`PublicSubnet02`].PhysicalResourceId' --output=text)
-
           curl --location "https://github.com/weaveworks/eksctl/releases/download/v0.121.0/eksctl_Linux_amd64.tar.gz" | tar xz -C /tmp
-          sudo mv /tmp/eksctl /usr/local/bin
-
+          sudo mv /tmp/eksctl /usr/local/bin  
+          ls -la 
           echo $PRIVATE_SUB_01
           echo $PRIVATE_SUB_02
           echo $PUBLIC_SUB_01
           echo $PUBLIC_SUB_02
           chmod +x eks-template-update.sh
           eks-template-update.sh
+          
           # eksctl create cluster -f eks/eks-cluster-spots.yaml
 
         # Our cluster consists two node groups
