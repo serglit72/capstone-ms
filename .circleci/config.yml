@@ -160,7 +160,8 @@ jobs:
           echo $PRIVATE_SUB_02
           echo $PUBLIC_SUB_01
           echo $PUBLIC_SUB_02
-
+          chmod +x eks-template-update.sh
+          eks-template-update.sh
           # eksctl create cluster -f eks/eks-cluster-spots.yaml
 
         # Our cluster consists two node groups
