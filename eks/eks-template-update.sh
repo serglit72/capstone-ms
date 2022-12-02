@@ -15,14 +15,14 @@ cd eks
 # {{MYVARNAME}} with the value of the MYVARVALUE variable
 echo "I'm in $pwd" 
 
-cat "eks-cluster-spot-copy.yaml" | sed "s/PRIVATE_SUB_01/$PRIVATE_SUB_01/g"
-cat "eks-cluster-spot-copy.yaml" | sed "s/PRIVATE_SUB_01/$PRIVATE_SUB_02/g"
-cat "eks-cluster-spot-copy.yaml" | sed "s/PUBLIC_SUB_01/$PUBLIC_SUB_01/g"
-cat "eks-cluster-spot-copy.yaml" | sed "s/PUBLIC_SUB_02/$PUBLIC_SUB_02/g"
+cat "eks-cluster-spot-copy.yaml" | sed "s/PRIVATE_SUB_01/$PRIVATE_SUB_01/g" && sed "s/PRIVATE_SUB_01/$PRIVATE_SUB_02/g" && sed "s/PUBLIC_SUB_01/$PUBLIC_SUB_01/g" && "s/PUBLIC_SUB_02/$PUBLIC_SUB_02/g"
+# cat "eks-cluster-spot-copy.yaml" | sed "s/PRIVATE_SUB_01/$PRIVATE_SUB_02/g"
+# cat "eks-cluster-spot-copy.yaml" | sed "s/PUBLIC_SUB_01/$PUBLIC_SUB_01/g"
+# cat "eks-cluster-spot-copy.yaml" | sed "s/PUBLIC_SUB_02/$PUBLIC_SUB_02/g"
 #sed "s/{{MYVARNAME}}/$MYVARVALUE/g"`
-ls -la
+
 cat "eks-cluster-spot-copy.yaml"
-pwd
+
 # echo "$template"
 
 # apply the yml with the substituted value
