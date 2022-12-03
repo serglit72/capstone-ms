@@ -162,7 +162,7 @@ jobs:
           chmod +w eks-cluster-spot-copy.yaml
           # cat "eks-cluster-spot-copy.yaml" | str='PRIVATE_SUB_01/$PRIVATE_SUB_01 PRIVATE_SUB_02/$PRIVATE_SUB_02 PUBLIC_SUB_01/$PUBLIC_SUB_01 PUBLIC_SUB_02/$PUBLIC_SUB_02'; for s in $str; do echo $s;done;
           ./eks-template-update.sh
-          cat "eks-cluster-spot-copy.yaml"
+          # cat "eks-cluster-spot-copy.yaml"
           
           # eksctl create cluster -f eks/eks-cluster-spots.yaml
 

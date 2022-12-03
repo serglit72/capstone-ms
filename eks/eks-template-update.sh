@@ -10,26 +10,26 @@ PUBLIC_SUB_02=$(aws cloudformation describe-stack-resources --stack-name eks-vpc
 
 for i in 1 2 3 4
 do
-if test $i == 1 
+if (( test $i == 1 )) 
 then
-    cat "eks-cluster-spot-copy.yaml" | sed "s/PRIVATE_SUB_01/$PRIVATE_SUB_01/g"
+   tmpconfig= cat "eks-cluster-spot-copy.yaml" | sed "s/PRIVATE_SUB_01/$PRIVATE_SUB_01/g"
 fi
 if (( $i == 2 ))
 then
-    cat "eks-cluster-spot-copy.yaml" | sed "s/PRIVATE_SUB_02/$PRIVATE_SUB_02/g"
+   tmpconfig=  cat "eks-cluster-spot-copy.yaml" | sed "s/PRIVATE_SUB_02/$PRIVATE_SUB_02/g"
 fi
 if (( $i == 3 ))
 then
-    cat "eks-cluster-spot-copy.yaml" | sed "s/PUBLIC_SUB_01/$PUBLIC_SUB_01/g"
+   tmpconfig=  cat "eks-cluster-spot-copy.yaml" | sed "s/PUBLIC_SUB_01/$PUBLIC_SUB_01/g"
 fi
 if (( $i == 4 ))
 then
-    cat "eks-cluster-spot-copy.yaml" | sed "s/PUBLIC_SUB_02/$PUBLIC_SUB_02/g"   
+   tmpconfig=  cat "eks-cluster-spot-copy.yaml" | sed "s/PUBLIC_SUB_02/$PUBLIC_SUB_02/g"   
 fi
 done
 #sed "s/{{MYVARNAME}}/$MYVARVALUE/g"
 # apply the yml with the substituted value
-# echo "$template" #| kubectl apply -f -
+echo "$tempconfig" #| kubectl apply -f -
 # curl --location "https://github.com/weaveworks/eksctl/releases/download/v0.121.0/eksctl_Linux_amd64.tar.gz" | tar xz -C /tmp
 
 # read the yml template from a file and substitute the string 
