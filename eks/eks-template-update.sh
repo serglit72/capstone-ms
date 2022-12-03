@@ -9,7 +9,7 @@ PUBLIC_SUB_01=$(aws cloudformation describe-stack-resources --stack-name eks-vpc
 PUBLIC_SUB_02=$(aws cloudformation describe-stack-resources --stack-name eks-vpc-9b633a6 --query 'StackResources[?LogicalResourceId==`PublicSubnet02`].PhysicalResourceId' --output=text)
 cat "eks-cluster-spot-copy.yaml" |\
 i=1 
-while (($i<=4))
+while (($i <= 4))
 do 
     sed "s/PRIVATE_SUB_01/$PRIVATE_SUB_01/g" 
     sed "s/PRIVATE_SUB_02/$PRIVATE_SUB_02/g"
