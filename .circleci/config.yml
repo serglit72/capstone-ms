@@ -78,6 +78,7 @@ jobs:
     - run:
         name: "lint and pytest: index page and status page"
         command: ". capstone/venv/bin/activate\nwget -O hadolint https://github.com/hadolint/hadolint/releases/download/v2.12.0/hadolint-Linux-x86_64 &&\\\nchmod +x hadolint\n./hadolint Dockerfile\npylint --disable=R,C,W1203,W1202 api.py\n# pytest \npython3 -m pytest -vv ./tests/\n#magic___^_^___line\n#magic___^_^___line\n"
+
   docker-build-push:
     docker:
     - image: cimg/base:2022.06
@@ -102,23 +103,22 @@ jobs:
     docker:
     - image: cimg/aws:2022.11
     steps:
-    - run: export AWS_DEFAULT_REGION=""
     # - aws-cli/install
     - aws-cli/setup:
         aws-access-key-id: AWS_ACCESS_KEY_ID
         aws-region: AWS_DEFAULT_REGION
         aws-secret-access-key: AWS_SECRET_ACCESS_KEY
     - checkout
-    # - run:
-    #     name: "Create VPC for EKS cluster"
-    #     command: | 
-    #       aws cloudformation create-stack \
-    #       --stack-name eks-vpc-${CIRCLE_WORKFLOW_ID:0:7} \
-    #       --template-body file://eks/amazon-eks-vpc-private-subnets.yaml \
-    #--parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}" \
-    #       --region=us-west-1
-    # - destroy_environment:
-    #     when_to_run: on_fail
+    - run:
+        name: "Create VPC for EKS cluster"
+        command: |
+          aws cloudformation create-stack \
+          --stack-name eks-vpc-${CIRCLE_WORKFLOW_ID:0:7} \
+          --template-body file://eks/amazon-eks-vpc-private-subnets.yaml \
+          --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}" \
+          --region=us-west-1
+    - destroy_environment:
+        when_to_run: on_fail
 
 
 
@@ -142,7 +142,14 @@ jobs:
 
     - run:
         name: "env vars and Install eksctl"
-        command: "cd eks \naws configure set region us-west-1 \ncurl --location \"https://github.com/weaveworks/eksctl/releases/download/v0.121.0/eksctl_Linux_amd64.tar.gz\" | tar xz -C /tmp\nsudo mv /tmp/eksctl /usr/local/bin  \nchmod +x eks-template-update.sh\n./eks-template-update.sh\n"
+        command: |
+          cd eks
+          aws configure set region us-west-1
+          curl --location \"https://github.com/weaveworks/eksctl/releases/download/v0.121.0/eksctl_Linux_amd64.tar.gz\" | tar xz -C /tmp
+          sudo mv /tmp/eksctl /usr/local/bin
+          chmod +x eks-template-update.sh
+          ./eks-template-update.sh
+
         # Our cluster consists two node groups
         # Small on-demand node group ‘ng-on-demand’, for ???Jenkins??? master, also you can put some monitoring tools and Vault if needed. 
         # If it’s only for Jenkins you can provision only one regular on-demand EC2 instance. 
@@ -159,6 +166,7 @@ jobs:
     - destroy_eks_cluster:
         when_to_run: on_fail
 
+
   infrastructure-check:
     docker:
     - image: cimg/aws:2022.11
@@ -174,9 +182,9 @@ jobs:
     - run:
         name: "Check cluster info"
         command: |
-          eksctl utils describe-stacks --region=us-west-1 --cluster=capstone-ci
-          eksctl get iamidentitymapping --cluster capstone-ci --region=us-west-1
-          eksctl delete --cluster capstone-ci --region=us-west-1
+          eksctl utils describe-stacks --region=us-west-1 --cluster=eks-ci-cd
+          eksctl get iamidentitymapping --cluster eks-ci-cd --region=us-west-1
+          # eksctl delete --cluster eks-ci-cd --region=us-west-1
     - run:
         name: "Install kubectl"
         command: |
@@ -189,11 +197,11 @@ jobs:
           mv ./kubectl ~/.local/bin/kubectl
           ls -la ~/.local/bin/kubectl
           kubectl version --client --output=yaml
-          aws eks update-kubeconfig --name capstone-ci --region us-west-1
+          aws eks update-kubeconfig --name eks-ci-cd --region us-west-1
           kubectl get nodes
           kubectl describe -n kube-system configmap/aws-auth
           aws sts get-caller-identity
-          kubectl delete
+          # kubectl delete
 
     # - save_cache:
     #     key: eks-kube-dependency
@@ -244,9 +252,9 @@ workflows:
     - configuration-infrastructure:
         requires:
         - create-vpc-for-kube-cluster
-        # - infrastructure-check
-        # requires:
-        # - configuration-infrastructure
+    - infrastructure-check:
+        requires:
+        - configuration-infrastructure
 
         # - deployment-blue:
         #     requires:
