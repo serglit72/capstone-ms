@@ -12,24 +12,25 @@ for i in 1 2 3 4
 do
 if (( test $i == 1 )) 
 then
-   tmpconfig= cat "eks-cluster-spot-copy.yaml" | sed "s/PRIVATE_SUB_01/$PRIVATE_SUB_01/g"
+   cat "eks-cluster-spot-copy.yaml" | sed "s/PRIVATE_SUB_01/$PRIVATE_SUB_01/g" > eks-cluster-spot-copy1.yaml
 fi
 if (( $i == 2 ))
 then
-   tmpconfig=  cat "eks-cluster-spot-copy.yaml" | sed "s/PRIVATE_SUB_02/$PRIVATE_SUB_02/g"
+   cat "eks-cluster-spot-copy1.yaml" | sed "s/PRIVATE_SUB_02/$PRIVATE_SUB_02/g" > eks-cluster-spot-copy2.yaml
 fi
 if (( $i == 3 ))
 then
-   tmpconfig=  cat "eks-cluster-spot-copy.yaml" | sed "s/PUBLIC_SUB_01/$PUBLIC_SUB_01/g"
+   cat "eks-cluster-spot-copy2.yaml" | sed "s/PUBLIC_SUB_01/$PUBLIC_SUB_01/g" > eks-cluster-spot-copy3.yaml
 fi
 if (( $i == 4 ))
 then
-   tmpconfig=  cat "eks-cluster-spot-copy.yaml" | sed "s/PUBLIC_SUB_02/$PUBLIC_SUB_02/g"   
+   cat "eks-cluster-spot-copy3.yaml" | sed "s/PUBLIC_SUB_02/$PUBLIC_SUB_02/g" > eks-cluster-spot-copy4.yaml
 fi
 done
+cat "eks-cluster-spot-copy4.yaml"
 #sed "s/{{MYVARNAME}}/$MYVARVALUE/g"
 # apply the yml with the substituted value
-echo "$tempconfig" #| kubectl apply -f -
+echo "$tmpconfig" #| kubectl apply -f -
 # curl --location "https://github.com/weaveworks/eksctl/releases/download/v0.121.0/eksctl_Linux_amd64.tar.gz" | tar xz -C /tmp
 
 # read the yml template from a file and substitute the string 
