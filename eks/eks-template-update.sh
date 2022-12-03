@@ -8,9 +8,9 @@ PRIVATE_SUB_02=$(aws cloudformation describe-stack-resources --stack-name eks-vp
 PUBLIC_SUB_01=$(aws cloudformation describe-stack-resources --stack-name eks-vpc-9b633a6 --query 'StackResources[?LogicalResourceId==`PublicSubnet01`].PhysicalResourceId' --output=text)
 PUBLIC_SUB_02=$(aws cloudformation describe-stack-resources --stack-name eks-vpc-9b633a6 --query 'StackResources[?LogicalResourceId==`PublicSubnet02`].PhysicalResourceId' --output=text)
 template= cat "eks-cluster-spot-copy.yaml" | sed "s/PRIVATE_SUB_01/$PRIVATE_SUB_01/g"
-template= cat $template | sed "s/PRIVATE_SUB_02/$PRIVATE_SUB_02/g"
-template= cat $template | sed "s/PUBLIC_SUB_01/$PUBLIC_SUB_01/g"
-template= cat $template | sed "s/PUBLIC_SUB_02/$PUBLIC_SUB_02/g"
+template= cat "$template" | sed "s/PRIVATE_SUB_02/$PRIVATE_SUB_02/g"
+template= cat "$template" | sed "s/PUBLIC_SUB_01/$PUBLIC_SUB_01/g"
+template= cat "$template" | sed "s/PUBLIC_SUB_02/$PUBLIC_SUB_02/g"
 #sed "s/{{MYVARNAME}}/$MYVARVALUE/g"
 # apply the yml with the substituted value
 echo "$template" #| kubectl apply -f -
