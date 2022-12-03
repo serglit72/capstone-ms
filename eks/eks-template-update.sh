@@ -27,13 +27,6 @@ fi
 done
 cat "eks-cluster-spot-copy4.yaml"
 
-while IFS= read -r line; do
-    echo "Text read from file: $line"
-done < my_filename.txt
-
-
-
-
 #sed "s/{{MYVARNAME}}/$MYVARVALUE/g"
 # apply the yml with the substituted value
 # echo "$tmpconfig" #| kubectl apply -f -
