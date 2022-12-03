@@ -115,7 +115,7 @@ jobs:
           aws cloudformation create-stack \
           --stack-name eks-vpc-${CIRCLE_WORKFLOW_ID:0:7} \
           --template-body file://eks/amazon-eks-vpc-private-subnets.yaml \
-          --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}" \
+          # --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}" \
           --region=us-west-1
     - destroy_environment:
         when_to_run: on_fail

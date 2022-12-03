@@ -3,10 +3,11 @@
 cd ~/project/eks
 # sample value for your variables
 # MYVARVALUE="nginx:latest"
-PRIVATE_SUB_01=$(aws cloudformation describe-stack-resources --stack-name eks-vpc-9b633a6 --query 'StackResources[?LogicalResourceId==`PrivateSubnet01`].PhysicalResourceId' --output=text)
-PRIVATE_SUB_02=$(aws cloudformation describe-stack-resources --stack-name eks-vpc-9b633a6 --query 'StackResources[?LogicalResourceId==`PrivateSubnet02`].PhysicalResourceId' --output=text)
-PUBLIC_SUB_01=$(aws cloudformation describe-stack-resources --stack-name eks-vpc-9b633a6 --query 'StackResources[?LogicalResourceId==`PublicSubnet01`].PhysicalResourceId' --output=text)
-PUBLIC_SUB_02=$(aws cloudformation describe-stack-resources --stack-name eks-vpc-9b633a6 --query 'StackResources[?LogicalResourceId==`PublicSubnet02`].PhysicalResourceId' --output=text)
+echo my_stack=$(aws cloudformation describe-stack-resources --stack-name eks-vpc-${CIRCLE_WORKFLOW_ID:0:7})
+PRIVATE_SUB_01=$(aws cloudformation describe-stack-resources --stack-name eks-vpc-${CIRCLE_WORKFLOW_ID:0:7} --query 'StackResources[?LogicalResourceId==`PrivateSubnet01`].PhysicalResourceId' --output=text)
+PRIVATE_SUB_02=$(aws cloudformation describe-stack-resources --stack-name eks-vpc-${CIRCLE_WORKFLOW_ID:0:7} --query 'StackResources[?LogicalResourceId==`PrivateSubnet02`].PhysicalResourceId' --output=text)
+PUBLIC_SUB_01=$(aws cloudformation describe-stack-resources --stack-name eks-vpc-${CIRCLE_WORKFLOW_ID:0:7} --query 'StackResources[?LogicalResourceId==`PublicSubnet01`].PhysicalResourceId' --output=text)
+PUBLIC_SUB_02=$(aws cloudformation describe-stack-resources --stack-name eks-vpc-${CIRCLE_WORKFLOW_ID:0:7} --query 'StackResources[?LogicalResourceId==`PublicSubnet02`].PhysicalResourceId' --output=text)
 
 for i in 1 2 3 4
 do
