@@ -13,7 +13,7 @@ cd eks
 
 # read the yml template from a file and substitute the string 
 # {{MYVARNAME}} with the value of the MYVARVALUE variable
-echo "I'm in {pwd}" 
+echo `I'm in (pwd)` 
 
 cat "eks-cluster-spot-copy.yaml" | str="PRIVATE_SUB_01/$PRIVATE_SUB_01 PRIVATE_SUB_02/$PRIVATE_SUB_02 PUBLIC_SUB_01/$PUBLIC_SUB_01 PUBLIC_SUB_02/$PUBLIC_SUB_02"  for s in $str do sed "s/$s/g" done
 # cat "eks-cluster-spot-copy.yaml" | sed "s/PRIVATE_SUB_01/$PRIVATE_SUB_02/g"

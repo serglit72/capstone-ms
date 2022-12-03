@@ -153,10 +153,10 @@ jobs:
           export PUBLIC_SUB_02=$(aws cloudformation describe-stack-resources --stack-name eks-vpc-9b633a6 --query 'StackResources[?LogicalResourceId==`PublicSubnet02`].PhysicalResourceId' --output=text)
           # curl --location "https://github.com/weaveworks/eksctl/releases/download/v0.121.0/eksctl_Linux_amd64.tar.gz" | tar xz -C /tmp
           # sudo mv /tmp/eksctl /usr/local/bin  
-          # echo $PRIVATE_SUB_01
-          # echo $PRIVATE_SUB_02
-          # echo $PUBLIC_SUB_01
-          # echo $PUBLIC_SUB_02
+          echo $PRIVATE_SUB_01
+          echo $PRIVATE_SUB_02
+          echo $PUBLIC_SUB_01
+          echo $PUBLIC_SUB_02
           cd eks && ls -la | grep "eks-template-update.sh"
           chmod +x eks-template-update.sh
           chmod +w eks-cluster-spot-copy.yaml
