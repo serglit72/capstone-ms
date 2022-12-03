@@ -1,6 +1,6 @@
 #!/bin/bash
 
-
+cd ~/project/eks
 # sample value for your variables
 # MYVARVALUE="nginx:latest"
 PRIVATE_SUB_01=$(aws cloudformation describe-stack-resources --stack-name eks-vpc-9b633a6 --query 'StackResources[?LogicalResourceId==`PrivateSubnet01`].PhysicalResourceId' --output=text)
