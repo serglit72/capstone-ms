@@ -83,6 +83,7 @@ jobs:
           # docker rmi $(docker images -a -q)
           docker build -t serglit72/flask-app:latest . && docker images
           docker push serglit72/flask-app:latest
+  
   create-vpc-for-kube-cluster:
     executor: aws-cli/default
     steps:
@@ -115,10 +116,14 @@ jobs:
     #     - eks/subnets
 
   configuration-infrastructure:
-
-    docker:
-    - image: cimg/aws:2022.11
+    executor: aws-cli/default
     steps:
+    - aws-cli/install
+    - aws-cli/setup:
+        aws-access-key-id: AWS_ACCESS_KEY_ID
+        aws-region: us-west-1
+        aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+   
     - checkout
     # - attach_workspace:
     #     at: ~/project
