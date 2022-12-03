@@ -85,13 +85,10 @@ jobs:
           docker push serglit72/flask-app:latest
   
   create-vpc-for-kube-cluster:
-    executor: aws-cli/default
+    docker:
+    - image: cimg/aws:2022.11
     steps:
-    - aws-cli/install
-    - aws-cli/setup:
-        aws-access-key-id: AWS_ACCESS_KEY_ID
-        aws-region: AWS_DEFAULT_REGION
-        aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+    
     - checkout
     # - run:
     #     name: "Create VPC for EKS cluster"
@@ -116,14 +113,10 @@ jobs:
     #     - eks/subnets
 
   configuration-infrastructure:
-    executor: aws-cli/default
+
+    docker:
+    - image: cimg/aws:2022.11
     steps:
-    - aws-cli/install
-    - aws-cli/setup:
-        aws-access-key-id: AWS_ACCESS_KEY_ID
-        aws-region: us-west-1
-        aws-secret-access-key: AWS_SECRET_ACCESS_KEY
-   
     - checkout
     # - attach_workspace:
     #     at: ~/project
@@ -132,6 +125,7 @@ jobs:
         name: "env vars and Install eksctl"
         command: |
           cd eks 
+          aws configure --region="us-west-1" 
           curl --location "https://github.com/weaveworks/eksctl/releases/download/v0.121.0/eksctl_Linux_amd64.tar.gz" | tar xz -C /tmp
           sudo mv /tmp/eksctl /usr/local/bin  
           chmod +x eks-template-update.sh
