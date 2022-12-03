@@ -1,6 +1,6 @@
 version: 2.1
 orbs:
-  aws-cli: circleci/aws-cli@3.1.3
+  aws-cli: circleci/aws-cli@3.1.4
 commands:
   print_pipeline_id:
     description: "Print a CircleCI workflowID"
@@ -83,12 +83,17 @@ jobs:
           # docker rmi $(docker images -a -q)
           docker build -t serglit72/flask-app:latest . && docker images
           docker push serglit72/flask-app:latest
-  
+
   create-vpc-for-kube-cluster:
     docker:
     - image: cimg/aws:2022.11
     steps:
-    
+    - run: export AWS_DEFAULT_REGION="us-west-1"
+    # - aws-cli/install
+    - aws-cli/setup:
+        aws-access-key-id: AWS_ACCESS_KEY_ID
+        aws-region: $AWS_DEFAULT_REGION
+        aws-secret-access-key: AWS_SECRET_ACCESS_KEY
     - checkout
     # - run:
     #     name: "Create VPC for EKS cluster"
@@ -101,7 +106,7 @@ jobs:
     # - destroy_environment:
     #     when_to_run: on_fail
 
-   
+
 
 
     # - persist_to_workspace:
@@ -123,13 +128,7 @@ jobs:
 
     - run:
         name: "env vars and Install eksctl"
-        command: |
-          cd eks 
-          aws configure --region="us-west-1" 
-          curl --location "https://github.com/weaveworks/eksctl/releases/download/v0.121.0/eksctl_Linux_amd64.tar.gz" | tar xz -C /tmp
-          sudo mv /tmp/eksctl /usr/local/bin  
-          chmod +x eks-template-update.sh
-          ./eks-template-update.sh
+        command: "cd eks \naws configure --region=\"us-west-1\" \ncurl --location \"https://github.com/weaveworks/eksctl/releases/download/v0.121.0/eksctl_Linux_amd64.tar.gz\" | tar xz -C /tmp\nsudo mv /tmp/eksctl /usr/local/bin  \nchmod +x eks-template-update.sh\n./eks-template-update.sh\n"
         # Our cluster consists two node groups
         # Small on-demand node group ‘ng-on-demand’, for ???Jenkins??? master, also you can put some monitoring tools and Vault if needed. 
         # If it’s only for Jenkins you can provision only one regular on-demand EC2 instance. 
