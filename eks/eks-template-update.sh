@@ -13,16 +13,13 @@ do
 if (( test $i == 1 )) 
 then
    cat "eks-cluster-spot-copy.yaml" | sed "s/PRIVATE_SUB_01/$PRIVATE_SUB_01/g" > eks-cluster-spot-copy1.yaml
-fi
-if (( $i == 2 ))
+elif (( $i == 2 ))
 then
    cat "eks-cluster-spot-copy1.yaml" | sed "s/PRIVATE_SUB_02/$PRIVATE_SUB_02/g" > eks-cluster-spot-copy2.yaml
-fi
-if (( $i == 3 ))
+elif (( $i == 3 ))
 then
    cat "eks-cluster-spot-copy2.yaml" | sed "s/PUBLIC_SUB_01/$PUBLIC_SUB_01/g" > eks-cluster-spot-copy3.yaml
-fi
-if (( $i == 4 ))
+elif (( $i == 4 ))
 then
    cat "eks-cluster-spot-copy3.yaml" | sed "s/PUBLIC_SUB_02/$PUBLIC_SUB_02/g" > eks-cluster-spot-copy4.yaml
 fi
