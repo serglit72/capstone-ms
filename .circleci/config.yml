@@ -60,7 +60,6 @@ jobs:
     steps:
     - attach_workspace:
         at: ~/project
-
     - run:
         name: "lint and pytest: index page and status page"
         command: ". capstone/venv/bin/activate\nwget -O hadolint https://github.com/hadolint/hadolint/releases/download/v2.12.0/hadolint-Linux-x86_64 &&\\\nchmod +x hadolint\n./hadolint Dockerfile\npylint --disable=R,C,W1203,W1202 api.py\n# pytest \npython3 -m pytest -vv ./tests/\n#magic___^_^___line\n#magic___^_^___line\n"
