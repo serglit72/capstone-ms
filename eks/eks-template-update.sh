@@ -17,7 +17,7 @@ echo "I'm in ($pwd)"
 
 cat "eks-cluster-spot-copy.yaml" | \
 str="PRIVATE_SUB_01/$PRIVATE_SUB_01 PRIVATE_SUB_02/$PRIVATE_SUB_02 \
-PUBLIC_SUB_01/$PUBLIC_SUB_01 PUBLIC_SUB_02/$PUBLIC_SUB_02" \
+PUBLIC_SUB_01/$PUBLIC_SUB_01 PUBLIC_SUB_02/$PUBLIC_SUB_02"; \
 for s in $str do sed "s/$s/g" done
 # cat "eks-cluster-spot-copy.yaml" | sed "s/PRIVATE_SUB_01/$PRIVATE_SUB_02/g"
 # cat "eks-cluster-spot-copy.yaml" | sed "s/PUBLIC_SUB_01/$PUBLIC_SUB_01/g"
