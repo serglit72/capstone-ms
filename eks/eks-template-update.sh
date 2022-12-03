@@ -15,7 +15,7 @@ do
     sed "s/PRIVATE_SUB_02/$PRIVATE_SUB_02/g" \
     sed "s/PUBLIC_SUB_01/$PUBLIC_SUB_01/g" \
     sed "s/PUBLIC_SUB_02/$PUBLIC_SUB_02/g" \
-    i=$(( n+1 ))
+    i=$(( i+1 ))
 done
 #sed "s/{{MYVARNAME}}/$MYVARVALUE/g"
 # apply the yml with the substituted value
