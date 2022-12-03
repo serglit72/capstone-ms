@@ -11,10 +11,7 @@ i=1
 cat "eks-cluster-spot-copy.yaml" |\
 while (($i <= 4))
 do 
-    sed "s/PRIVATE_SUB_01/$PRIVATE_SUB_01/g" &&\
-    sed "s/PRIVATE_SUB_02/$PRIVATE_SUB_02/g" &&\
-    sed "s/PUBLIC_SUB_01/$PUBLIC_SUB_01/g" &&\
-    sed "s/PUBLIC_SUB_02/$PUBLIC_SUB_02/g" &&\
+    sed "s/PRIVATE_SUB_01/$PRIVATE_SUB_01/g" && sed "s/PRIVATE_SUB_02/$PRIVATE_SUB_02/g" && sed "s/PUBLIC_SUB_01/$PUBLIC_SUB_01/g" && sed "s/PUBLIC_SUB_02/$PUBLIC_SUB_02/g" 
     i=$(( i+1 ))
 done
 #sed "s/{{MYVARNAME}}/$MYVARVALUE/g"
