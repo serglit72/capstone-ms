@@ -90,10 +90,10 @@ jobs:
     steps:
     - run: export AWS_DEFAULT_REGION="us-west-1"
     # - aws-cli/install
-    - aws-cli/setup:
-        aws-access-key-id: AWS_ACCESS_KEY_ID
-        aws-region: $AWS_DEFAULT_REGION
-        aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+    # - aws-cli/setup:
+    #     aws-access-key-id: AWS_ACCESS_KEY_ID
+    #     aws-region: AWS_DEFAULT_REGION
+    #     aws-secret-access-key: AWS_SECRET_ACCESS_KEY
     - checkout
     # - run:
     #     name: "Create VPC for EKS cluster"
@@ -123,8 +123,8 @@ jobs:
     - image: cimg/aws:2022.11
     steps:
     - checkout
-    # - attach_workspace:
-    #     at: ~/project
+    - attach_workspace:
+        at: ~/project
 
     - run:
         name: "env vars and Install eksctl"
