@@ -16,8 +16,8 @@
 echo "I'm in ($pwd)" 
 
 new_file=cat "eks-cluster-spot-copy.yaml" | \
-str="PRIVATE_SUB_01/$PRIVATE_SUB_01 PRIVATE_SUB_02/$PRIVATE_SUB_02 \
-PUBLIC_SUB_01/$PUBLIC_SUB_01 PUBLIC_SUB_02/$PUBLIC_SUB_02"; \
+str='PRIVATE_SUB_01/$PRIVATE_SUB_01 PRIVATE_SUB_02/$PRIVATE_SUB_02 \
+PUBLIC_SUB_01/$PUBLIC_SUB_01 PUBLIC_SUB_02/$PUBLIC_SUB_02'; \
 for s in $str do sed "s/$s/g" done;
 # cat "eks-cluster-spot-copy.yaml" | sed "s/PRIVATE_SUB_01/$PRIVATE_SUB_02/g"
 # cat "eks-cluster-spot-copy.yaml" | sed "s/PUBLIC_SUB_01/$PUBLIC_SUB_01/g"
@@ -26,7 +26,7 @@ for s in $str do sed "s/$s/g" done;
 
 # cat "eks-cluster-spot-copy.yaml"
 
-echo "$new_file"
+echo $new_file
 
 # apply the yml with the substituted value
 # echo "$template" | kubectl apply -f -
