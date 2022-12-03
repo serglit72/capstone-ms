@@ -103,42 +103,21 @@ jobs:
     # - destroy_environment:
     #     when_to_run: on_fail
 
-    - run:
-        name: "Get subnets IDs"
-        command: |
-          # aws cloudformation describe-stacks --stack-name eks-vpc-${CIRCLE_WORKFLOW_ID:0:7}
-          # echo PRIVATE_SUB_01=$(aws cloudformation describe-stack-resources --stack-name eks-vpc-9b633a6 --query 'StackResources[?LogicalResourceId==`PrivateSubnet01`].PhysicalResourceId' --output=text) > eks/subnets
-          # echo PRIVATE_SUB_02=$(aws cloudformation describe-stack-resources --stack-name eks-vpc-9b633a6 --query 'StackResources[?LogicalResourceId==`PrivateSubnet02`].PhysicalResourceId' --output=text) >> eks/subnets
-          # echo PUBLIC_SUB_01=$(aws cloudformation describe-stack-resources --stack-name eks-vpc-9b633a6 --query 'StackResources[?LogicalResourceId==`PublicSubnet01`].PhysicalResourceId' --output=text) >> eks/subnets
-          # echo PUBLIC_SUB_02=$(aws cloudformation describe-stack-resources --stack-name eks-vpc-9b633a6 --query 'StackResources[?LogicalResourceId==`PublicSubnet02`].PhysicalResourceId' --output=text) >> eks/subnets
-          pwd && ls -la
-
-          # PRIVATE_SUB_01: $(aws cloudformation describe-stack-resources --stack-name eks-vpc-9b633a6 --query 'StackResources[?LogicalResourceId==`PrivateSubnet01`].PhysicalResourceId' --output=text)
-          # PRIVATE_SUB_02: $(aws cloudformation describe-stack-resources --stack-name eks-vpc-9b633a6 --query 'StackResources[?LogicalResourceId==`PrivateSubnet02`].PhysicalResourceId' --output=text)
-          # PUBLIC_SUB_01: $(aws cloudformation describe-stack-resources --stack-name eks-vpc-9b633a6 --query 'StackResources[?LogicalResourceId==`PublicSubnet01`].PhysicalResourceId' --output=text)
-          # PUBLIC_SUB_02: $(aws cloudformation describe-stack-resources --stack-name eks-vpc-9b633a6 --query 'StackResources[?LogicalResourceId==`PublicSubnet02`].PhysicalResourceId' --output=text)
+   
 
 
-
-        # - persist_to_workspace:
-        #     # Must be an absolute path, or relative path from working_directory. This is a directory on the container which is
-        #     # taken to be the root directory of the workspace.
-        #     root: ~/project
-        #     # Must be relative path from root
-        #     paths:
-        #     - eks/subnets
+    # - persist_to_workspace:
+    #     # Must be an absolute path, or relative path from working_directory. This is a directory on the container which is
+    #     # taken to be the root directory of the workspace.
+    #     root: ~/project
+    #     # Must be relative path from root
+    #     paths:
+    #     - eks/subnets
 
   configuration-infrastructure:
 
     docker:
     - image: cimg/aws:2022.11
-
-    # environment:
-    #   PRIVATE_SUB_01: echo 'export PRIVATE_SUB_01=$(aws cloudformation describe-stack-resources --stack-name eks-vpc-9b633a6 --query 'StackResources[?LogicalResourceId==`PrivateSubnet01`].PhysicalResourceId' --output=text)' >> "$BASH_ENV"
-    #   PRIVATE_SUB_02: echo 'export PRIVATE_SUB_02=$(aws cloudformation describe-stack-resources --stack-name eks-vpc-9b633a6 --query 'StackResources[?LogicalResourceId==`PrivateSubnet02`].PhysicalResourceId' --output=text)' >> "$BASH_ENV"
-    #   PUBLIC_SUB_01: echo 'export PUBLIC_SUB_01=$(aws cloudformation describe-stack-resources --stack-name eks-vpc-9b633a6 --query 'StackResources[?LogicalResourceId==`PublicSubnet01`].PhysicalResourceId' --output=text)' >> "$BASH_ENV"
-    #   PUBLIC_SUB_02: echo 'export PUBLIC_SUB_02=$(aws cloudformation describe-stack-resources --stack-name eks-vpc-9b633a6 --query 'StackResources[?LogicalResourceId==`PublicSubnet02`].PhysicalResourceId' --output=text)' >> "$BASH_ENV"
-
     steps:
     - checkout
     # - attach_workspace:
@@ -147,25 +126,12 @@ jobs:
     - run:
         name: "env vars and Install eksctl"
         command: |
-          # export PRIVATE_SUB_01=$(aws cloudformation describe-stack-resources --stack-name eks-vpc-9b633a6 --query 'StackResources[?LogicalResourceId==`PrivateSubnet01`].PhysicalResourceId' --output=text)
-          # export PRIVATE_SUB_02=$(aws cloudformation describe-stack-resources --stack-name eks-vpc-9b633a6 --query 'StackResources[?LogicalResourceId==`PrivateSubnet02`].PhysicalResourceId' --output=text)
-          # export PUBLIC_SUB_01=$(aws cloudformation describe-stack-resources --stack-name eks-vpc-9b633a6 --query 'StackResources[?LogicalResourceId==`PublicSubnet01`].PhysicalResourceId' --output=text)
-          # export PUBLIC_SUB_02=$(aws cloudformation describe-stack-resources --stack-name eks-vpc-9b633a6 --query 'StackResources[?LogicalResourceId==`PublicSubnet02`].PhysicalResourceId' --output=text)
-          # curl --location "https://github.com/weaveworks/eksctl/releases/download/v0.121.0/eksctl_Linux_amd64.tar.gz" | tar xz -C /tmp
-          # sudo mv /tmp/eksctl /usr/local/bin  
-          # echo $PRIVATE_SUB_01
-          # echo $PRIVATE_SUB_02
-          # echo $PUBLIC_SUB_01
-          # echo $PUBLIC_SUB_02
-          cd eks && ls -la | grep "eks-template-update.sh"
+          cd eks 
+          curl --location "https://github.com/weaveworks/eksctl/releases/download/v0.121.0/eksctl_Linux_amd64.tar.gz" | tar xz -C /tmp
+          sudo mv /tmp/eksctl /usr/local/bin  
           chmod +x eks-template-update.sh
           chmod +w eks-cluster-spot-copy.yaml
-          # cat "eks-cluster-spot-copy.yaml" | str='PRIVATE_SUB_01/$PRIVATE_SUB_01 PRIVATE_SUB_02/$PRIVATE_SUB_02 PUBLIC_SUB_01/$PUBLIC_SUB_01 PUBLIC_SUB_02/$PUBLIC_SUB_02'; for s in $str; do echo $s;done;
           ./eks-template-update.sh
-          # cat "eks-cluster-spot-copy.yaml"
-          
-          # eksctl create cluster -f eks/eks-cluster-spots.yaml
-
         # Our cluster consists two node groups
         # Small on-demand node group ‘ng-on-demand’, for ???Jenkins??? master, also you can put some monitoring tools and Vault if needed. 
         # If it’s only for Jenkins you can provision only one regular on-demand EC2 instance. 
@@ -174,11 +140,11 @@ jobs:
         # based on spot instances and scaled by ‘Cluster Autoscaler’ to needed size according to load.
         #
 
-
-    # - run:
-    #     name: "Create kubernetes cluster on VPC "
-    #     command: |
-    #       eksctl create cluster -f eks/eks-cluster-spots.yaml
+    - run:
+        name: "Create kubernetes cluster on VPC "
+        command: |
+          cd eks
+          eksctl create cluster -f eks-cluster-spot-copy4.yaml
 
   infrastructure-check:
     docker:
