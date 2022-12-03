@@ -83,45 +83,39 @@ jobs:
           # docker rmi $(docker images -a -q)
           docker build -t serglit72/flask-app:latest . && docker images
           docker push serglit72/flask-app:latest
-
+  
   create-vpc-for-kube-cluster:
     docker:
     - image: cimg/aws:2022.11
     steps:
+    - run: export AWS_DEFAULT_REGION=""
+    # - aws-cli/install
+    - aws-cli/setup:
+        aws-access-key-id: AWS_ACCESS_KEY_ID
+        aws-region: AWS_DEFAULT_REGION
+        aws-secret-access-key: AWS_SECRET_ACCESS_KEY
     - checkout
-    - run:
-        name: AWS CLI Config export AWS_DEFAULT_REGION="us-west-1"
-        command: |
-          ls -la
-          sudo cat ~/.aws/config
+    # - run:
+    #     name: "Create VPC for EKS cluster"
+    #     command: | 
+    #       aws cloudformation create-stack \
+    #       --stack-name eks-vpc-${CIRCLE_WORKFLOW_ID:0:7} \
+    #       --template-body file://eks/amazon-eks-vpc-private-subnets.yaml \
+    #--parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}" \
+    #       --region=us-west-1
+    # - destroy_environment:
+    #     when_to_run: on_fail
 
-        # - aws-cli/install
-        # - aws-cli/setup:
-        #     aws-access-key-id: AWS_ACCESS_KEY_ID
-        #     aws-region: AWS_DEFAULT_REGION
-        #     aws-secret-access-key: AWS_SECRET_ACCESS_KEY
-
-        # - run:
-        #     name: "Create VPC for EKS cluster"
-        #     command: | 
-        #       aws cloudformation create-stack \
-        #       --stack-name eks-vpc-${CIRCLE_WORKFLOW_ID:0:7} \
-        #       --template-body file://eks/amazon-eks-vpc-private-subnets.yaml \
-        #--parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}" \
-        #       --region=us-west-1
-        # - destroy_environment:
-        #     when_to_run: on_fail
+   
 
 
-
-
-        # - persist_to_workspace:
-        #     # Must be an absolute path, or relative path from working_directory. This is a directory on the container which is
-        #     # taken to be the root directory of the workspace.
-        #     root: ~/project
-        #     # Must be relative path from root
-        #     paths:
-        #     - eks/subnets
+    # - persist_to_workspace:
+    #     # Must be an absolute path, or relative path from working_directory. This is a directory on the container which is
+    #     # taken to be the root directory of the workspace.
+    #     root: ~/project
+    #     # Must be relative path from root
+    #     paths:
+    #     - eks/subnets
 
   configuration-infrastructure:
 
@@ -129,12 +123,18 @@ jobs:
     - image: cimg/aws:2022.11
     steps:
     - checkout
-    - attach_workspace:
-        at: ~/project
+    # - attach_workspace:
+    #     at: ~/project
 
     - run:
         name: "env vars and Install eksctl"
-        command: "cd eks \naws configure --region=\"us-west-1\" \ncurl --location \"https://github.com/weaveworks/eksctl/releases/download/v0.121.0/eksctl_Linux_amd64.tar.gz\" | tar xz -C /tmp\nsudo mv /tmp/eksctl /usr/local/bin  \nchmod +x eks-template-update.sh\n./eks-template-update.sh\n"
+        command: |
+          cd eks 
+          aws configure set region us-west-1 
+          curl --location "https://github.com/weaveworks/eksctl/releases/download/v0.121.0/eksctl_Linux_amd64.tar.gz" | tar xz -C /tmp
+          sudo mv /tmp/eksctl /usr/local/bin  
+          chmod +x eks-template-update.sh
+          ./eks-template-update.sh
         # Our cluster consists two node groups
         # Small on-demand node group ‘ng-on-demand’, for ???Jenkins??? master, also you can put some monitoring tools and Vault if needed. 
         # If it’s only for Jenkins you can provision only one regular on-demand EC2 instance. 
@@ -147,7 +147,7 @@ jobs:
         name: "Create kubernetes cluster on VPC "
         command: |
           cd eks && ls -la
-          # eksctl create cluster -f eks-cluster-spot-copy4.yaml
+          eksctl create cluster -f eks-cluster-spot-copy4.yaml
 
   infrastructure-check:
     docker:
