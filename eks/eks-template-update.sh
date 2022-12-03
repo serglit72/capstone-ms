@@ -24,10 +24,10 @@ then
    cat "eks-cluster-spot-copy.yaml" | sed "s/PUBLIC_SUB_02/$PUBLIC_SUB_02/g" > eks-cluster-spot-copy.yaml
 fi
 done
-cat "eks-cluster-spot-copy4.yaml"
+cat "eks-cluster-spot-copy.yaml"
 #sed "s/{{MYVARNAME}}/$MYVARVALUE/g"
 # apply the yml with the substituted value
-echo "$tmpconfig" #| kubectl apply -f -
+# echo "$tmpconfig" #| kubectl apply -f -
 # curl --location "https://github.com/weaveworks/eksctl/releases/download/v0.121.0/eksctl_Linux_amd64.tar.gz" | tar xz -C /tmp
 
 # read the yml template from a file and substitute the string 
