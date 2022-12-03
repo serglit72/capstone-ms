@@ -160,7 +160,10 @@ jobs:
           cd eks && ls -la | grep "eks-template-update.sh"
           chmod +x eks-template-update.sh
           chmod +w eks-cluster-spot-copy.yaml
-          ./eks-template-update.sh
+          str='PRIVATE_SUB_01/$PRIVATE_SUB_01 PRIVATE_SUB_02/$PRIVATE_SUB_02 \
+          PUBLIC_SUB_01/$PUBLIC_SUB_01 PUBLIC_SUB_02/$PUBLIC_SUB_02'; \
+          for s in $str do sed "s/$s/g" eks-cluster-spot-copy.yaml done;
+          # ./eks-template-update.sh
           cat eks-cluster-spot-copy.yaml
           
           # eksctl create cluster -f eks/eks-cluster-spots.yaml
