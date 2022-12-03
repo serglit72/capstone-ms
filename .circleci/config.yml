@@ -144,7 +144,7 @@ jobs:
         name: "Create kubernetes cluster on VPC "
         command: |
           cd eks
-          eksctl create cluster -f eks-cluster-spot-copy4.yaml
+          # eksctl create cluster -f eks-cluster-spot-copy4.yaml
 
   infrastructure-check:
     docker:

@@ -2,7 +2,7 @@ ApiVersion: eksctl.io/v1alpha5
 kind: ClusterConfig
 metadata:
   name: eks-ci-cd
-  region: us-west-1
+  region: "us-west-1"
 vpc:
   subnets:
     private:
@@ -22,7 +22,9 @@ nodeGroups:
   privateNetworking: true
   labels:
     instance-type: on-demand
-  availabilityZones: ["us-west-1a", "us-west-1b"]
+  availabilityZones:
+  - us-west-1a
+  - us-west-1b
 - name: ng-spot
   desiredCapacity: 0
   minSize: 0
@@ -35,7 +37,7 @@ nodeGroups:
     spotInstancePools: 6
   tags:
     k8s.io/cluster-autoscaler/node-template/label/instance-type: spot
-  availabilityZones: ["us-west-1a", "us-west-1b"]
+  availabilityZones: ['us-west-1a', 'us-west-1b']
   labels:
     instance-type: spot
   iam:
