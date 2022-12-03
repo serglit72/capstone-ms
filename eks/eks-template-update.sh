@@ -9,6 +9,7 @@ PUBLIC_SUB_01=$(aws cloudformation describe-stack-resources --stack-name eks-vpc
 PUBLIC_SUB_02=$(aws cloudformation describe-stack-resources --stack-name eks-vpc-9b633a6 --query 'StackResources[?LogicalResourceId==`PublicSubnet02`].PhysicalResourceId' --output=text)
 
 for i in 1 2 3 4
+do
 if test $i == 1 
 then
     cat "eks-cluster-spot-copy.yaml" | sed "s/PRIVATE_SUB_01/$PRIVATE_SUB_01/g"
@@ -25,7 +26,7 @@ if (( $i == 4 ))
 then
     cat "eks-cluster-spot-copy.yaml" | sed "s/PUBLIC_SUB_02/$PUBLIC_SUB_02/g"   
 fi
-
+done
 #sed "s/{{MYVARNAME}}/$MYVARVALUE/g"
 # apply the yml with the substituted value
 # echo "$template" #| kubectl apply -f -
