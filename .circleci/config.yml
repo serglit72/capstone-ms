@@ -144,7 +144,7 @@ jobs:
         command: |
           cd eks
           aws configure set region us-west-1
-          curl --location \"https://github.com/weaveworks/eksctl/releases/download/v0.121.0/eksctl_Linux_amd64.tar.gz\" | tar xz -C /tmp
+          curl https://github.com/weaveworks/eksctl/releases/download/v0.121.0/eksctl_Linux_amd64.tar.gz | tar xz -C /tmp
           sudo mv /tmp/eksctl /usr/local/bin
           chmod +x eks-template-update.sh
           ./eks-template-update.sh
