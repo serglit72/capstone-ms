@@ -113,22 +113,22 @@ jobs:
         name: "Create VPC for EKS cluster"
         command: |
           aws configure set region us-west-1
-          aws cloudformation describe-stacks
-          aws cloudformation create-stack \
-          --stack-name eks-vpc \
-          --template-body file://eks/amazon-eks-vpc-private-subnets.yaml \
-          --region us-west-1
+          aws cloudformation describe-stack-resources --stack-name eks-vpc
+          # aws cloudformation create-stack \
+          # --stack-name eks-vpc \
+          # --template-body file://eks/amazon-eks-vpc-private-subnets.yaml \
+          # --region us-west-1
 
     - destroy_environment:
         when_to_run: on_fail
 
-    # - persist_to_workspace:
-    #     # Must be an absolute path, or relative path from working_directory. This is a directory on the container which is
-    #     # taken to be the root directory of the workspace.
-    #     root: ~/project
-    #     # Must be relative path from root
-    #     paths:
-    #     - eks/subnets
+    - persist_to_workspace:
+        # Must be an absolute path, or relative path from working_directory. This is a directory on the container which is
+        # taken to be the root directory of the workspace.
+        root: ~/project
+        # Must be relative path from root
+        paths:
+        - ./
 
   configuration-infrastructure:
 
@@ -136,8 +136,8 @@ jobs:
     - image: cimg/aws:2022.11
     steps:
     - checkout
-    # - attach_workspace:
-    #     at: ~/project
+    - attach_workspace:
+        at: ~/project
 
     - run:
         name: "env vars and Install eksctl"
