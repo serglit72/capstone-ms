@@ -18,7 +18,7 @@ commands:
     - run:
         name: Destroy Environments
         command: |
-          aws cloudformation delete-stack --stack-name eks-vpc-${CIRCLE_WORKFLOW_ID:0:7}
+          aws cloudformation delete-stack --stack-name eks-vpc
         when: on_fail
 
   destroy_eks_cluster:
@@ -33,7 +33,7 @@ commands:
           eksctl delete cluster --region=us-west-1 --name=eks-ci-cd
         when: on_fail
 
-
+        # eksctl delete --cluster eks-ci-cd --region=us-west-1
 
 
 
@@ -112,18 +112,15 @@ jobs:
     - run:
         name: "Create VPC for EKS cluster"
         command: |
-          # aws cloudformation describe stack-name eks-vpc-${CIRCLE_WORKFLOW_ID:0:7}
           aws configure set region us-west-1
+          aws cloudformation describe stack-name eks-vpc
           aws cloudformation create-stack \
-          --stack-name eks-vpc-${CIRCLE_WORKFLOW_ID:0:7} \
+          --stack-name eks-vpc \
           --template-body file://eks/amazon-eks-vpc-private-subnets.yaml \
           --region us-west-1
-          # --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}" \
+
     - destroy_environment:
         when_to_run: on_fail
-
-
-
 
     # - persist_to_workspace:
     #     # Must be an absolute path, or relative path from working_directory. This is a directory on the container which is
@@ -186,7 +183,7 @@ jobs:
         command: |
           eksctl utils describe-stacks --region=us-west-1 --cluster=eks-ci-cd
           eksctl get iamidentitymapping --cluster eks-ci-cd --region=us-west-1
-          # eksctl delete --cluster eks-ci-cd --region=us-west-1
+
     - run:
         name: "Install kubectl"
         command: |
