@@ -246,7 +246,7 @@ workflows:
     # - docker-build-push:
     #     requires: 
     #       - test-build
-    # - create-vpc-for-kube-cluster
+    - create-vpc-for-kube-cluster
 
     - configuration-infrastructure:
         requires:
