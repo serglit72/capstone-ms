@@ -113,7 +113,7 @@ jobs:
         name: "Create VPC for EKS cluster"
         command: |
           aws configure set region us-west-1
-          aws cloudformation describe stack-name eks-vpc
+          aws cloudformation describe-stacks
           aws cloudformation create-stack \
           --stack-name eks-vpc \
           --template-body file://eks/amazon-eks-vpc-private-subnets.yaml \
