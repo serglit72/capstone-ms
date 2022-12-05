@@ -177,7 +177,7 @@ jobs:
           curl --location "https://github.com/weaveworks/eksctl/releases/download/v0.121.0/eksctl_Linux_amd64.tar.gz" | tar xz -C /tmp
           sudo mv /tmp/eksctl /usr/local/bin
           aws configure set region us-west-1
-          NodeGroup=$(aws cloudformation describe-stack-resources --stack-name eksctl-eks-ci-cd-nodegroup-ng-spot --query 'StackResources[?LogicalResourceId==`NodeInstanceRole`].PhysicalResourceId' --output=text)
+          NodeInstanceRole=$(aws cloudformation describe-stack-resources --stack-name eksctl-eks-ci-cd-nodegroup-ng-spot --query 'StackResources[?LogicalResourceId==`NodeInstanceRole`].PhysicalResourceId' --output=text)
           aws iam put-role-policy --role-name $NodeInstanceRole --policy-name ASG-Policy-For-Worker --policy-document file://eks/eks-ca-asg-policy.json
     
     - run:
