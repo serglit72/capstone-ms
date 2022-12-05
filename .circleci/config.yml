@@ -216,7 +216,11 @@ jobs:
           chmod 700 get_helm.sh
           ./get_helm.sh
           # kubectl create ns ingress-nginx
+          helm repo add nginx-stable https://helm.nginx.com/stable
+          helm repo update
           helm install ingress nginx-stable/nginx-ingress -n ingress-nginx 
+          kubectl get pods --all-namespaces -l app=nginx-ingress-nginx-ingress
+          kubectl get services nginx-ingress-nginx-ingress
     # - save_cache:
     #     key: eks-kube-dependency
     #     paths:
