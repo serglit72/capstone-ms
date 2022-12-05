@@ -177,7 +177,9 @@ jobs:
           curl --location "https://github.com/weaveworks/eksctl/releases/download/v0.121.0/eksctl_Linux_amd64.tar.gz" | tar xz -C /tmp
           sudo mv /tmp/eksctl /usr/local/bin
           ls -la /usr/local/bin
-
+          NodeGroup=$(aws cloudformation describe-stack-resources --stack-name eksctl-eks-ci-cd-nodegroup-ng-spot --query 'StackResources[?LogicalResourceId==`NodeInstanceRole`].PhysicalResourceId' --output=text)
+          aws iam put-role-policy --role-name $NodeInstanceRole --policy-name ASG-Policy-For-Worker --policy-document file://eks/eks-ca-asg-policy.json
+    
     - run:
         name: "Check cluster info"
         command: |
@@ -246,14 +248,14 @@ workflows:
     # - docker-build-push:
     #     requires: 
     #       - test-build
-    - create-vpc-for-kube-cluster
+    # - create-vpc-for-kube-cluster
 
-    - configuration-infrastructure:
-        requires:
-        - create-vpc-for-kube-cluster
-    - infrastructure-check:
-        requires:
-        - configuration-infrastructure
+    # - configuration-infrastructure:
+    #     requires:
+    #     - create-vpc-for-kube-cluster
+    - infrastructure-check
+        # requires:
+        # - configuration-infrastructure
 
         # - deployment-blue:
         #     requires:

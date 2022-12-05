@@ -8,7 +8,8 @@ PRIVATE_SUB_01=$(aws cloudformation describe-stack-resources --stack-name eks-vp
 PRIVATE_SUB_02=$(aws cloudformation describe-stack-resources --stack-name eks-vpc --query 'StackResources[?LogicalResourceId==`PrivateSubnet02`].PhysicalResourceId' --output=text)
 PUBLIC_SUB_01=$(aws cloudformation describe-stack-resources --stack-name eks-vpc --query 'StackResources[?LogicalResourceId==`PublicSubnet01`].PhysicalResourceId' --output=text)
 PUBLIC_SUB_02=$(aws cloudformation describe-stack-resources --stack-name eks-vpc --query 'StackResources[?LogicalResourceId==`PublicSubnet02`].PhysicalResourceId' --output=text)
-AZ_PRIVATE_01=
+
+
 
 
 
