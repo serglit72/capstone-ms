@@ -206,6 +206,7 @@ jobs:
           kubectl get nodes
           kubectl describe -n kube-system configmap/aws-auth
           aws sts get-caller-identity
+          cd eks
           kubectl apply -f cluster-autoscaler-one-asg.yaml
           # kubectl delete
 
