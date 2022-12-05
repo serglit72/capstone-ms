@@ -180,6 +180,10 @@ jobs:
           NodeInstanceRole=$(aws cloudformation describe-stack-resources --stack-name eksctl-eks-ci-cd-nodegroup-ng-spot --query 'StackResources[?LogicalResourceId==`NodeInstanceRole`].PhysicalResourceId' --output=text)
           aws iam put-role-policy --role-name $NodeInstanceRole --policy-name ASG-Policy-For-Worker --policy-document file://eks/eks-ca-asg-policy.json
           aws iam get-role-policy --role-name $NodeInstanceRole --policy-name ASG-Policy-For-Worker
+          NodeInstanceRole2=$(aws cloudformation describe-stack-resources --stack-name eksctl-eks-ci-cd-nodegroup-ng-on-demand --query 'StackResources[?LogicalResourceId==`NodeInstanceRole`].PhysicalResourceId' --output=text)
+          aws iam put-role-policy --role-name $NodeInstanceRole2 --policy-name ASG-Policy-For-Worker --policy-document file://eks/eks-ca-asg-policy.json
+          aws iam get-role-policy --role-name $NodeInstanceRole2 --policy-name ASG-Policy-For-Worker 
+
     - run:
         name: "Check cluster info"
         command: |
@@ -254,29 +258,29 @@ workflows:
     #     requires:
     #     - create-vpc-for-kube-cluster
     - infrastructure-check
-        # requires:
-        # - configuration-infrastructure
+    # requires:
+    # - configuration-infrastructure
 
-        # - deployment-blue:
-        #     requires:
-        #     - infrastructure-check
+    # - deployment-blue:
+    #     requires:
+    #     - infrastructure-check
 
-        # - deployment-green:
-        #     requires:
-        #     - configuration-infrastructure
+    # - deployment-green:
+    #     requires:
+    #     - configuration-infrastructure
 
-        # - test-blue:
-        #     requires:
-        #     - deployment-blue
+    # - test-blue:
+    #     requires:
+    #     - deployment-blue
 
-        # - test-green:
-        #     requires:
-        #     - deployment-green
+    # - test-green:
+    #     requires:
+    #     - deployment-green
 
-        # - switch-dns:
-        #     requires:
-        #     - test-green
-        #     - test-blue
+    # - switch-dns:
+    #     requires:
+    #     - test-green
+    #     - test-blue
 
 
 # VS Code Extension Version: 1.3.0
