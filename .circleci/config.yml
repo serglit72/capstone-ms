@@ -209,16 +209,16 @@ jobs:
           cd eks
           kubectl apply -f cluster-autoscaler-one-asg.yaml
           kubectl get pods -n kube-system
-    # - run:
-    #     name: "Install Helm and NGINX"
-    #     command: |     
-    #       curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
-    #       chmod 700 get_helm.sh
-    #       ./get_helm.sh
-    #       # kubectl create ns ingress-nginx
-    #       helm repo add nginx-stable https://helm.nginx.com/stable
-    #       helm repo update
-    #       helm install ingress nginx-stable/nginx-ingress -n ingress-nginx 
+    - run:
+        name: "Install Helm and NGINX"
+        command: |     
+          # curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+          # chmod 700 get_helm.sh
+          # ./get_helm.sh
+          # kubectl create ns ingress-nginx
+          helm repo add nginx-stable https://helm.nginx.com/stable
+          helm repo update
+          helm install ingress nginx-stable/nginx-ingress -n ingress-nginx 
     
     - run:
         name: "Check NGINX is installed"
@@ -226,7 +226,7 @@ jobs:
           kubectl version --short
           kubectl get pods --all-namespaces -l app=nginx-ingress-nginx-ingress
           kubectl get services nginx-ingress-nginx-ingress
-          
+
     # - save_cache:
     #     key: eks-kube-dependency
     #     paths:
