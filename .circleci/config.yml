@@ -220,12 +220,12 @@ jobs:
           helm repo update
           helm install nginx-ingress nginx-stable/nginx-ingress -n ingress-nginx --set rbac.create=true
     
-    # - run:
-    #     name: "Check NGINX is installed"
-    #     command: |   
-    #       kubectl version --short
-    #       kubectl get pods --all-namespaces -l app=nginx-ingress-nginx-ingress 
-    #       kubectl get services nginx-ingress-nginx-ingres
+    - run:
+        name: "Check NGINX is installed"
+        command: |   
+          kubectl version --short
+          kubectl get pods --all-namespaces -l app=nginx-ingress-nginx-ingress 
+          kubectl get services nginx-ingress-nginx-ingres
 
     # - save_cache:
     #     key: eks-kube-dependency
