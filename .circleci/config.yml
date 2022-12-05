@@ -225,7 +225,7 @@ jobs:
         command: |   
           kubectl version --short
           kubectl get pods --all-namespaces -l app=nginx-ingress-nginx-ingress 
-          kubectl get services nginx-ingress-nginx-ingres
+          kubectl get services -n ingress-nginx
 
     # - save_cache:
     #     key: eks-kube-dependency
