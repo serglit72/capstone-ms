@@ -161,7 +161,7 @@ jobs:
         name: "Create kubernetes cluster on VPC "
         command: |
           cd eks && ls -la
-          eksctl create cluster -f eks-cluster-spot.yaml
+          eksctl create cluster -f eks-cluster-spots.yaml
     - destroy_eks_cluster:
         when_to_run: on_fail
 
