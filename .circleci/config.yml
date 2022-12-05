@@ -215,10 +215,10 @@ jobs:
           curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
           chmod 700 get_helm.sh
           ./get_helm.sh
-          # kubectl create ns ingress-nginx
+          kubectl create ns ingress-nginx
           helm repo add nginx-stable https://helm.nginx.com/stable
           helm repo update
-          helm install nginx-ingress nginx-stable/nginx-ingress -n ingress-nginx 
+          helm install nginx-ingress stable/nginx-ingress -n ingress-nginx 
     
     - run:
         name: "Check NGINX is installed"
