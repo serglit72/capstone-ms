@@ -208,6 +208,7 @@ jobs:
           aws sts get-caller-identity
           cd eks
           kubectl apply -f cluster-autoscaler-one-asg.yaml
+          kubectl get pods -n kube-system
           # kubectl delete
 
     # - save_cache:
