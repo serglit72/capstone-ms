@@ -209,8 +209,12 @@ jobs:
           cd eks
           kubectl apply -f cluster-autoscaler-one-asg.yaml
           kubectl get pods -n kube-system
-          # kubectl delete
-
+    - run:
+        name: "Install Helm"
+        command: |     
+          curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+          chmod 700 get_helm.sh
+          ./get_helm.sh
     # - save_cache:
     #     key: eks-kube-dependency
     #     paths:
