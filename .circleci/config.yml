@@ -218,14 +218,14 @@ jobs:
           # kubectl create ns ingress-nginx
           helm repo add nginx-stable https://helm.nginx.com/stable
           helm repo update
-          helm install ingress nginx-stable/nginx-ingress -n ingress-nginx 
+          helm install nginx-ingress nginx-stable/nginx-ingress -n ingress-nginx 
     
     - run:
         name: "Check NGINX is installed"
         command: |   
           kubectl version --short
-          kubectl get pods --all-namespaces -l app=nginx-ingress-nginx-ingress
-          kubectl get services nginx-ingress-nginx-ingress
+          kubectl get pods --all-namespaces 
+          kubectl get services nginx-ingress
 
     # - save_cache:
     #     key: eks-kube-dependency
