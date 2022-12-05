@@ -212,11 +212,11 @@ jobs:
     - run:
         name: "Install Helm and NGINX"
         command: |     
-          curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
-          chmod 700 get_helm.sh
-          ./get_helm.sh
-          kubectl create ns ingress-nginx
-          helm install ingress-nginx stable/nginx-ingress -n ingress-nginx
+          # curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+          # chmod 700 get_helm.sh
+          # ./get_helm.sh
+          # kubectl create ns ingress-nginx
+          helm install ingress nginx-stable/nginx-ingress -n ingress-nginx
     # - save_cache:
     #     key: eks-kube-dependency
     #     paths:
