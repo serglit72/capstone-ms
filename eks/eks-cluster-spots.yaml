@@ -7,14 +7,14 @@ vpc:
   subnets:
     private:
       us-west-1a:
-        id: !Ref $PRIVATE_SUB_01
-      us-west-1b:
-        id:  !Ref SubConfig/PRIVATE_SUB_02
+        id: subnet-0381da7b52b2c8e36
+      us-west-1c:
+        id: subnet-0c919103c6b11b1e5
     public:
       us-west-1a:
-        id: $PUBLIC_SUB_01
-      us-west-1b:
-        id: $PUBLIC_SUB_02
+        id: subnet-06321714ab0a079ee
+      us-west-1c:
+        id: subnet-040876ea34967bed2
 nodeGroups:
 - name: ng-on-demand
   instanceType: t3.large
@@ -22,7 +22,7 @@ nodeGroups:
   privateNetworking: true
   labels:
     instance-type: on-demand
-  availabilityZones: ["us-west-1a", "us-west-1b"]
+  availabilityZones: ["us-west-1a", "us-west-1c"]
 - name: ng-spot
   desiredCapacity: 0
   minSize: 0
@@ -35,7 +35,7 @@ nodeGroups:
     spotInstancePools: 6
   tags:
     k8s.io/cluster-autoscaler/node-template/label/instance-type: spot
-  availabilityZones: ["us-west-1a", "us-west-1b"]
+  availabilityZones: ["us-west-1a", "us-west-1c"]
   labels:
     instance-type: spot
   iam:

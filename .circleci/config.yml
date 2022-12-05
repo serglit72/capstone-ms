@@ -147,7 +147,7 @@ jobs:
           curl --location "https://github.com/weaveworks/eksctl/releases/download/v0.121.0/eksctl_Linux_amd64.tar.gz" | tar xz -C /tmp
           sudo mv /tmp/eksctl /usr/local/bin
           chmod +x eks-template-update.sh
-          ./eks-template-update.sh
+          # ./eks-template-update.sh
 
         # Our cluster consists two node groups
         # Small on-demand node group ‘ng-on-demand’, for ???Jenkins??? master, also you can put some monitoring tools and Vault if needed. 
@@ -161,7 +161,7 @@ jobs:
         name: "Create kubernetes cluster on VPC "
         command: |
           cd eks && ls -la
-          eksctl create cluster -f eks-cluster-spot-copy4.yaml
+          eksctl create cluster -f eks-cluster-spot.yaml
     - destroy_eks_cluster:
         when_to_run: on_fail
 

@@ -3,17 +3,20 @@
 cd ~/project/eks
 # sample value for your variables
 # MYVARVALUE="nginx:latest"
-echo my_stack=$(aws cloudformation describe-stack-resources --stack-name eks-vpc)
+echo my_stack=$(aws ec2 describe-subnets --profile myHomeLinux --query 'Subnets[].["AvailabilityZone","SubnetId","VpcId","State",Tags[?Key==`Name`].Value]' --output=text)
 PRIVATE_SUB_01=$(aws cloudformation describe-stack-resources --stack-name eks-vpc --query 'StackResources[?LogicalResourceId==`PrivateSubnet01`].PhysicalResourceId' --output=text)
 PRIVATE_SUB_02=$(aws cloudformation describe-stack-resources --stack-name eks-vpc --query 'StackResources[?LogicalResourceId==`PrivateSubnet02`].PhysicalResourceId' --output=text)
 PUBLIC_SUB_01=$(aws cloudformation describe-stack-resources --stack-name eks-vpc --query 'StackResources[?LogicalResourceId==`PublicSubnet01`].PhysicalResourceId' --output=text)
 PUBLIC_SUB_02=$(aws cloudformation describe-stack-resources --stack-name eks-vpc --query 'StackResources[?LogicalResourceId==`PublicSubnet02`].PhysicalResourceId' --output=text)
+AZ_PRIVATE_01=
+
+
 
 for i in 1 2 3 4
 do
 if test $i == 1  
 then
-   cat "eks-cluster-spot-copy.yaml" | sed "s/PRIVATE_SUB_01/$PRIVATE_SUB_01/g" > eks-cluster-spot-copy1.yaml
+   cat "eks-cluster-spot-copy.yaml" | sed "s/PRIVATE_SUB_01/$PRIVATE_SUB_01/g"  > eks-cluster-spot-copy1.yaml
 elif test $i == 2
 then
    cat "eks-cluster-spot-copy1.yaml" | sed "s/PRIVATE_SUB_02/$PRIVATE_SUB_02/g" > eks-cluster-spot-copy2.yaml
