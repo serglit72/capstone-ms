@@ -226,7 +226,12 @@ jobs:
           kubectl version --short
           kubectl get pods --all-namespaces -l app=nginx-ingress-nginx-ingress 
           kubectl get services -n ingress-nginx
-
+    - run:
+        name: "Run NGINX on port 80"
+        command: | 
+          kubectl run nginx --image nginx
+          kubectl expose deploy nginx --port 80
+          kubectl create -f ingress-nginx.yaml
     # - save_cache:
     #     key: eks-kube-dependency
     #     paths:
@@ -238,7 +243,14 @@ jobs:
         # Must be relative path from root
         paths:
         - ./
-
+  route-53:
+    docker:
+    - image: cimg/aws:2022.11
+    steps:
+    - checkout
+    - run:
+        name: "Install eksctl"
+        command: |
   deployment-blue:
     docker:
     - image: cimg/aws:2022.11
