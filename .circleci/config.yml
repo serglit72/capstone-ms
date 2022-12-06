@@ -229,6 +229,7 @@ jobs:
     - run:
         name: "Run NGINX on port 80"
         command: | 
+          cd eks
           kubectl run nginx --image nginx
           kubectl expose deploy nginx --port 80
           kubectl create -f ingress-nginx.yaml
