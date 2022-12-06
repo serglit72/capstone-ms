@@ -232,7 +232,7 @@ jobs:
           cd eks
           # kubectl run nginx --image nginx
           # kubectl expose deploy nginx --port 80
-          kubectl create -f ingress-nginx.yaml
+          kubectl create -f ingress-nginx.yaml -n ingress-nginx
     # - save_cache:
     #     key: eks-kube-dependency
     #     paths:
