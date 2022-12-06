@@ -231,7 +231,7 @@ jobs:
         command: | 
           cd eks
           kubectl run nginx --image nginx
-          kubectl expose deploy nginx --port 80
+          # kubectl expose deploy nginx --port 80
           kubectl create -f ingress-nginx.yaml
     # - save_cache:
     #     key: eks-kube-dependency
