@@ -173,17 +173,7 @@ jobs:
     - checkout
     - run:
         name: "Install eksctl"
-        command: |
-          curl --location "https://github.com/weaveworks/eksctl/releases/download/v0.121.0/eksctl_Linux_amd64.tar.gz" | tar xz -C /tmp
-          sudo mv /tmp/eksctl /usr/local/bin
-          aws configure set region us-west-1
-          NodeInstanceRole=$(aws cloudformation describe-stack-resources --stack-name eksctl-eks-ci-cd-nodegroup-ng-spot --query 'StackResources[?LogicalResourceId==`NodeInstanceRole`].PhysicalResourceId' --output=text)
-          aws iam put-role-policy --role-name $NodeInstanceRole --policy-name ASG-Policy-For-Worker --policy-document file://eks/eks-ca-asg-policy.json
-          aws iam get-role-policy --role-name $NodeInstanceRole --policy-name ASG-Policy-For-Worker
-          NodeInstanceRole2=$(aws cloudformation describe-stack-resources --stack-name eksctl-eks-ci-cd-nodegroup-ng-on-demand --query 'StackResources[?LogicalResourceId==`NodeInstanceRole`].PhysicalResourceId' --output=text)
-          aws iam put-role-policy --role-name $NodeInstanceRole2 --policy-name ASG-Policy-For-Worker --policy-document file://eks/eks-ca-asg-policy.json
-          aws iam get-role-policy --role-name $NodeInstanceRole2 --policy-name ASG-Policy-For-Worker 
-
+        command: "curl --location \"https://github.com/weaveworks/eksctl/releases/download/v0.121.0/eksctl_Linux_amd64.tar.gz\" | tar xz -C /tmp\nsudo mv /tmp/eksctl /usr/local/bin\naws configure set region us-west-1\nNodeInstanceRole=$(aws cloudformation describe-stack-resources --stack-name eksctl-eks-ci-cd-nodegroup-ng-spot --query 'StackResources[?LogicalResourceId==`NodeInstanceRole`].PhysicalResourceId' --output=text)\naws iam put-role-policy --role-name $NodeInstanceRole --policy-name ASG-Policy-For-Worker --policy-document file://eks/eks-ca-asg-policy.json\naws iam get-role-policy --role-name $NodeInstanceRole --policy-name ASG-Policy-For-Worker\nNodeInstanceRole2=$(aws cloudformation describe-stack-resources --stack-name eksctl-eks-ci-cd-nodegroup-ng-on-demand --query 'StackResources[?LogicalResourceId==`NodeInstanceRole`].PhysicalResourceId' --output=text)\naws iam put-role-policy --role-name $NodeInstanceRole2 --policy-name ASG-Policy-For-Worker --policy-document file://eks/eks-ca-asg-policy.json\naws iam get-role-policy --role-name $NodeInstanceRole2 --policy-name ASG-Policy-For-Worker \n#magic___^_^___line\n"
     - run:
         name: "Check cluster info"
         command: |
@@ -211,7 +201,7 @@ jobs:
           kubectl get pods -n kube-system
     - run:
         name: "Install Helm and NGINX"
-        command: |     
+        command: |
           curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
           chmod 700 get_helm.sh
           ./get_helm.sh
@@ -219,20 +209,17 @@ jobs:
           helm repo add nginx-stable https://helm.nginx.com/stable
           helm repo update
           # helm install nginx-ingress nginx-stable/nginx-ingress -n ingress-nginx --set rbac.create=true
-    
+
     - run:
         name: "Check NGINX is installed"
-        command: |   
-          kubectl version --short
-          kubectl get pods --all-namespaces -l app=nginx-ingress-nginx-ingress 
-          kubectl get services -n ingress-nginx
+        command: "kubectl version --short\nkubectl get pods --all-namespaces -l app=nginx-ingress-nginx-ingress \nkubectl get services -n ingress-nginx\n"
     - run:
         name: "Run NGINX on port 80"
-        command: | 
+        command: |
           cd eks
           # kubectl run nginx --image nginx
           # kubectl expose deploy nginx --port 80
-          kubectl create -f ingress-nginx.yaml -n ingress-nginx
+          kubectl apply -f ingress-nginx.yaml -n ingress-nginx
     # - save_cache:
     #     key: eks-kube-dependency
     #     paths:
@@ -251,7 +238,7 @@ jobs:
     - checkout
     - run:
         name: "Install eksctl"
-        command: |
+        command: ""
   deployment-blue:
     docker:
     - image: cimg/aws:2022.11
