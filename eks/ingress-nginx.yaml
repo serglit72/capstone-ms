@@ -3,10 +3,16 @@ kind: Ingress
 metadata:
   name: hello-world
   annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
 spec:
   ingressClassName: nginx
+  tls:
+  - hosts:
+    - host1.eks.slitcloud.com
+    - host2.eks.slitcloud.com
+    secretName: hello-kubernetes-tls
   rules:
-  - host: test.eks.slitcloud.com
+  - host: host1.eks.slitcloud.com
     http:
       paths:
       - pathType: Prefix
