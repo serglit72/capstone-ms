@@ -1,15 +1,18 @@
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: nginx-test
+  name: hello-world
   annotations:
-    kubernetes.io/ingress.class: "nginx"
 spec:
+  ingressClassName: nginx
   rules:
-  - host: test.eks.slitcloud.com
+  - host: host1.slitcloud.ext
     http:
       paths:
-      - path: /
+      - pathType: Prefix
+        path: "/"
         backend:
-          serviceName: nginx
-          servicePort: 80
+          service:
+            name: hello-world
+            port:
+              number: 80
