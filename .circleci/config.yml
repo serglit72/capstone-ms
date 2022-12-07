@@ -217,8 +217,8 @@ jobs:
         name: "Run NGINX on port 80"
         command: |
           cd eks
-          # kubectl run nginx --image nginx
-          # kubectl expose deploy nginx --port 80
+          kubectl run nginx --image nginx
+          kubectl expose pod nginx --port 80
           kubectl apply -f ingress-nginx.yaml -n ingress-nginx
     # - save_cache:
     #     key: eks-kube-dependency
