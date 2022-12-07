@@ -6,7 +6,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: host1.slitcloud.ext
+  - host: host1.slitcloud.com
     http:
       paths:
       - pathType: Prefix
