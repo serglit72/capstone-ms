@@ -1,24 +1,15 @@
-apiVersion: networking.k8s.io/v1
+apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: hello-world
+  name: nginx-test
   annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-prod
+    kubernetes.io/ingress.class: "nginx"
 spec:
-  ingressClassName: nginx
-  tls:
-  - hosts:
-    - host1.eks.slitcloud.com
-    - host2.eks.slitcloud.com
-    secretName: hello-kubernetes-tls
   rules:
-  - host: host2.eks.slitcloud.com
+  - host: test.eks.slitcloud.com
     http:
       paths:
-      - pathType: Prefix
-        path: "/"
+      - path: /
         backend:
-          service:
-            name: hello-world
-            port:
-              number: 80
+          serviceName: nginx
+          servicePort: 80
